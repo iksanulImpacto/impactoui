@@ -1,0 +1,74 @@
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+}
+
+android {
+    namespace 'com.impacto.impactoui'
+    compileSdk 36
+
+    defaultConfig {
+        minSdk 24
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.7"
+    }
+
+    buildFeatures {
+        compose = true
+    }
+}
+
+dependencies {
+    // --- Android core ---
+    implementation(libs.androidx.core.ktx)
+    implementation libs.androidx.compose.testing
+    implementation(libs.androidx.activity.compose)
+    // (Opsional) kalau masih ada legacy View UI di module ini:
+    // implementation(libs.androidx.appcompat)
+    // implementation(libs.material)
+
+    // --- Unit test ---
+    testImplementation(libs.junit)
+
+    // --- Android Instrumented test ---
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+
+    // --- Compose BOM ---
+    implementation(platform(libs.androidx.compose.bom))
+
+    // --- Compose UI ---
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui.graphics)
+
+    // --- Compose debug only (Preview + Manifest) ---
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
+    // --- Compose instrumented test ---
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+}
+
