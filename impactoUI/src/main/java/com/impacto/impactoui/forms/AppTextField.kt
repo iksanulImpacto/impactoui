@@ -12,10 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.xr.compose.testing.isFocused
-
-import androidx.compose.ui.res.colorResource
-import com.impacto.impactoui.R // pastikan ini sesuai dengan package resource kamu
 
 @Composable
 fun AppTextField(
