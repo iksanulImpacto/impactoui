@@ -9,14 +9,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
@@ -30,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -37,7 +43,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import com.impacto.impactoui.buttons.DynamicButton
 import com.impacto.impactoui.buttons.DynamicIconButton
+import com.impacto.impactoui.forms.AppAdvanceField
 import com.impacto.impactoui.forms.AppTextField
 import com.impacto.ui.ui.theme.UiTheme
 
@@ -155,10 +163,59 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     )
 }
 
+@Composable
+fun MyButtonExample() {
+    val backgroundColor = colorResource(id = R.color.white)
+    val contentColor = colorResource(id = R.color.black)
+
+
+    val borderColor = colorResource(id = R.color.purple_500)
+
+    DynamicButton(
+        modifier = Modifier.fillMaxWidth(),
+        borderColor = borderColor,
+        backgroundColor = Color.Transparent,
+        contentColor = borderColor,
+        shape = RoundedCornerShape(100.dp),
+        onClick = { /* handle click */ }
+    ) {
+        Text("Outlined Button")
+    }
+
+}
+
+@Composable
+fun MyAdvanceButtonExample() {
+    val iconStart = rememberVectorPainter(image = Icons.Filled.DateRange)
+    val iconEnd = rememberVectorPainter(image = Icons.Filled.ArrowDropDown)
+    val value = "12 Agustus 2025"
+    val isError = value.isEmpty()
+
+    AppAdvanceField(
+        modifier = Modifier.fillMaxWidth(),
+        enabled = true,
+        isError = isError,
+        errorText = "Tanggal wajib diisi"
+    ) {
+        Icon(painter = iconStart, contentDescription = null, tint = Color(0xFF2196F3))
+        Column(modifier = Modifier.weight(1f).padding(start = 8.dp)) {
+            Text("Tanggal Lahir", style = MaterialTheme.typography.labelSmall)
+            Text(
+                text = if (value.isEmpty()) "Pilih tanggal" else value,
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (value.isEmpty()) Color.Gray else Color.Black
+            )
+        }
+        Icon(painter = iconEnd, contentDescription = null, tint = Color(0xFF2196F3))
+    }
+}
+
+
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     UiTheme {
-        Greeting("Android")
+        MyAdvanceButtonExample()
     }
 }
