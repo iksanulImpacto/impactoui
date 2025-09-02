@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14f00ce3-d62f-4780-80e7-1980c48051a1" name="Changes" comment="" />
+    <list default="true" id="14f00ce3-d62f-4780-80e7-1980c48051a1" name="Changes" comment="first commit KMP" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,6 +22,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
@@ -49,6 +52,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;Gradle.ImpactoUI [clean build].executor&quot;: &quot;Run&quot;,
     &quot;Gradle.ImpactoUI [dependencies | grep \&quot;plugin\&quot;].executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
@@ -152,11 +156,6 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ImpactoUI [clean build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -231,6 +230,27 @@
       <option name="presentableId" value="Default" />
       <updated>1756794286618</updated>
     </task>
+    <task id="LOCAL-00001" summary="first commit KMP">
+      <option name="closed" value="true" />
+      <created>1756802021841</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1756802021841</updated>
+    </task>
+    <task id="LOCAL-00002" summary="first commit KMP">
+      <option name="closed" value="true" />
+      <created>1756802105728</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1756802105728</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="first commit KMP" />
+    <option name="LAST_COMMIT_MESSAGE" value="first commit KMP" />
   </component>
 </project>
