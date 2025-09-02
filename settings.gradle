@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ui"
+rootProject.name = "impactoUI"
 include ':app'
 include ':impactoUI'
