@@ -36,9 +36,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.compose.runtime:runtime:1.8.2")
-                implementation("org.jetbrains.compose.foundation:foundation:1.8.2")
-                implementation("org.jetbrains.compose.material3:material3:1.8.2")
+                implementation(libs.runtime)
+                implementation(libs.foundation)
+                implementation(libs.material3)
             }
         }
         val commonTest by getting {

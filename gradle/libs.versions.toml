@@ -1,11 +1,17 @@
 [versions]
 agp = "8.12.2"
+foundation = "1.8.2"
 kotlin = "2.1.21" # update agar support Xcode 16.3+
 android-minSdk = "24"
 android-compileSdk = "36"
+material3 = "1.8.2"
+runtime = "1.8.2"
 
 [libraries]
+foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "foundation" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
+runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "runtime" }
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
