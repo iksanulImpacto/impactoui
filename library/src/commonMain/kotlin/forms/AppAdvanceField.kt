@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import com.impacto.impactoui.textStyle.AppTextStyle
 
 @Composable
 fun AppAdvanceField(
@@ -53,7 +54,7 @@ fun AppAdvanceField(
             Text(
                 text = errorText,
                 color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall,
+                style = AppTextStyle.SmallNormal,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )
         }

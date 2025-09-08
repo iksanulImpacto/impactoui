@@ -32,7 +32,6 @@ fun <T> GenericList(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { onItemClick(item) }
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     rowContent(item)
                 }
