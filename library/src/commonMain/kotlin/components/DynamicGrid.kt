@@ -16,13 +16,13 @@ import androidx.compose.ui.unit.dp
 fun <T>DynamicGrid(
     items: List<T>,
     columns: Int = 2,
+    modifier: Modifier,
     rowContent: @Composable (T) -> Unit
 ) {
     val rows = items.chunked(columns)
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(8.dp),
+        modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(rows) { rowItems ->
