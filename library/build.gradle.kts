@@ -14,7 +14,7 @@ version = "1.0.0"
 
 kotlin {
     // Target JVM (desktop / server)
-    jvm()
+//    jvm()
 
     // Target Android
     androidTarget {
