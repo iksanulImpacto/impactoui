@@ -6,12 +6,15 @@ android-minSdk = "24"
 android-compileSdk = "36"
 material3 = "1.8.2"
 runtime = "1.8.2"
+compose = "1.9.1"
 
 [libraries]
 foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "foundation" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
 runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "runtime" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }

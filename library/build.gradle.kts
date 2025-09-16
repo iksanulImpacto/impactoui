@@ -41,6 +41,11 @@ kotlin {
                 implementation(libs.material3)
             }
         }
+        val androidMain by getting {
+            dependencies {
+                implementation("androidx.compose.ui:ui-tooling-preview:1.9.1")
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(libs.kotlin.test)

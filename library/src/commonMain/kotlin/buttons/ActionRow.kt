@@ -1,6 +1,7 @@
 package com.impacto.impactoui.buttons
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,13 +19,15 @@ import com.impacto.impactoui.colors.AppColors
 fun ActionRow(
     modifier: Modifier = Modifier,
     icon: @Composable (() -> Unit)? = null,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
+    onClick: (() -> Unit)? = null
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(AppColors.White)
+            .clickable(enabled = onClick != null) { onClick?.invoke() }
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
