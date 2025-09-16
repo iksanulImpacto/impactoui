@@ -19,8 +19,8 @@ import com.impacto.impactoui.colors.AppColors
 fun ActionRow(
     modifier: Modifier = Modifier,
     icon: @Composable (() -> Unit)? = null,
-    content: @Composable () -> Unit,
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
+    content: @Composable () -> Unit
 ) {
     Row(
         modifier = modifier
