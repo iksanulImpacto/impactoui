@@ -39,6 +39,8 @@ kotlin {
                 implementation(libs.runtime)
                 implementation(libs.foundation)
                 implementation(libs.material3)
+                implementation(libs.kotlinx.datetime)
+
             }
         }
         val androidMain by getting {
