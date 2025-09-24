@@ -16,7 +16,8 @@ fun BottomSheetDialog(
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        modifier = Modifier.fillMaxWidth().background(AppColors.White)
+        modifier = Modifier.fillMaxWidth(),
+        containerColor = AppColors.White
     ) {
         content()
     }
