@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -45,6 +46,9 @@ import com.impacto.impactoui.textStyle.AppTextStyle
 @Composable
 fun AppBasicTextField(
     modifier: Modifier = Modifier,
+    value: String = "",
+    onValueChange: (String) -> Unit = {},
+    placeholder: String? = null, // add placeholder param
     isError: Boolean = false,
     label: String? = null,
     errorText: String? = null,
@@ -65,17 +69,18 @@ fun AppBasicTextField(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .height(48.dp)
             .background(backgroundColor, RoundedCornerShape(8.dp))
             .border(
                 width = 1.5.dp,
                 color = borderColor,
                 shape = RoundedCornerShape(8.dp)
-            ).padding(vertical = if(label == null || label == "" ) 8.dp else 0.dp)
+            ).padding(vertical = if(label.isNullOrEmpty()) 8.dp else 0.dp)
     ) {
         Column {
             BasicTextField(
-                value = "tes",
-                onValueChange = { },
+                value = value,
+                onValueChange = onValueChange,
                 singleLine = true,
                 textStyle = AppTextStyle.MediumNormal,
                 visualTransformation = if (isSecure && !isPasswordVisible) {
@@ -83,31 +88,38 @@ fun AppBasicTextField(
                 } else {
                     VisualTransformation.None
                 },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                keyboardOptions = KeyboardOptions.Default,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
                     .onFocusChanged { },
                 decorationBox = { innerTextField ->
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth(), // atur padding sendiri
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(
                             modifier = Modifier.weight(1f)
                         ) {
-                            if (label != null) {
+                            if (!label.isNullOrEmpty()) {
                                 Text(
                                     label,
                                     style = AppTextStyle.SmallNormal,
-                                    modifier = Modifier.padding(bottom = 0.dp) // jarak 0
+                                    modifier = Modifier.padding(bottom = 0.dp)
                                 )
                             }
+
+                            if (value.isEmpty() && !placeholder.isNullOrEmpty()) {
+                                Text(
+                                    text = placeholder,
+                                    style = AppTextStyle.MediumNormal.copy(color = AppColors.Grey400)
+                                )
+                            }
+
                             innerTextField()
                         }
 
-                        if(isSecure) {
+                        if (isSecure) {
                             IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                                 Icon(
                                     painter = painterResource(
@@ -122,7 +134,7 @@ fun AppBasicTextField(
                 }
             )
 
-            if (isError && errorText != null) {
+            if (isError && !errorText.isNullOrEmpty()) {
                 Text(
                     text = errorText,
                     color = errorBorderColor,
@@ -131,21 +143,22 @@ fun AppBasicTextField(
                 )
             }
         }
-
     }
-
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun Testing() {
+    var text by remember { mutableStateOf("") }
     var isError by remember { mutableStateOf(false) }
 
     AppBasicTextField(
+        value = text,
+        onValueChange = { text = it },
+        placeholder = "Masukkan password",
         isError = isError,
-        errorText = "",
-        label = "string",
-        isFocused = true
+        errorText = "Password salah",
+        isFocused = true,
+        isSecure = true
     )
 }
