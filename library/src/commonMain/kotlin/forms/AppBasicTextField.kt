@@ -3,13 +3,16 @@ package com.impacto.impactoui.forms
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -48,7 +51,7 @@ fun AppBasicTextField(
     modifier: Modifier = Modifier,
     value: String = "",
     onValueChange: (String) -> Unit = {},
-    placeholder: String? = null, // add placeholder param
+    placeholder: String? = null,
     isError: Boolean = false,
     label: String? = null,
     errorText: String? = null,
@@ -58,6 +61,9 @@ fun AppBasicTextField(
     errorBorderColor: Color = MaterialTheme.colorScheme.error,
     backgroundColor: Color = Color.White,
     isSecure: Boolean = false,
+    prefix: @Composable (() -> Unit)? = null,
+    suffix: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
     val borderColor = when {
@@ -69,15 +75,23 @@ fun AppBasicTextField(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(48.dp)
+            .heightIn(min = 50.dp)
             .background(backgroundColor, RoundedCornerShape(8.dp))
             .border(
                 width = 1.5.dp,
                 color = borderColor,
                 shape = RoundedCornerShape(8.dp)
-            ).padding(vertical = if(label.isNullOrEmpty()) 8.dp else 0.dp)
+            )
+            .padding(vertical = if (label.isNullOrEmpty()) 8.dp else 0.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Column {
+        // prefix
+        prefix?.let {
+            Box(modifier = Modifier.padding(start = 12.dp)) { it() }
+            Spacer(Modifier.width(8.dp))
+        }
+
+        Column(modifier = Modifier.weight(1f)) {
             BasicTextField(
                 value = value,
                 onValueChange = onValueChange,
@@ -91,44 +105,29 @@ fun AppBasicTextField(
                 keyboardOptions = KeyboardOptions.Default,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .padding(horizontal = 4.dp, vertical = 8.dp)
                     .onFocusChanged { },
                 decorationBox = { innerTextField ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column(
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            if (!label.isNullOrEmpty()) {
-                                Text(
-                                    label,
-                                    style = AppTextStyle.SmallNormal,
-                                    modifier = Modifier.padding(bottom = 0.dp)
-                                )
-                            }
+                    Column {
+                        if (!label.isNullOrEmpty()) {
+                            Text(
+                                label,
+                                style = AppTextStyle.SmallNormal,
+                                modifier = Modifier.padding(bottom = 2.dp)
+                            )
+                        }
 
-                            if (value.isEmpty() && !placeholder.isNullOrEmpty()) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            if (value.isEmpty() && !placeholder.isNullOrEmpty() && !isFocused) {
                                 Text(
                                     text = placeholder,
                                     style = AppTextStyle.MediumNormal.copy(color = AppColors.Grey400)
                                 )
                             }
-
                             innerTextField()
-                        }
-
-                        if (isSecure) {
-                            IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
-                                Icon(
-                                    painter = painterResource(
-                                        id = if (isPasswordVisible) R.drawable.ic_visibility
-                                        else R.drawable.ic_visibility_off
-                                    ),
-                                    contentDescription = "Toggle Password"
-                                )
-                            }
                         }
                     }
                 }
@@ -143,8 +142,34 @@ fun AppBasicTextField(
                 )
             }
         }
+
+        suffix?.let {
+            Spacer(Modifier.width(8.dp))
+            Box(modifier = Modifier.padding(end = 8.dp)) { it() }
+        }
+
+
+        trailingIcon?.let {
+            IconButton(onClick = { }) {
+                it()
+            }
+        }
+
+
+        if (isSecure) {
+            IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                Icon(
+                    painter = painterResource(
+                        id = if (isPasswordVisible) R.drawable.ic_visibility
+                        else R.drawable.ic_visibility_off
+                    ),
+                    contentDescription = "Toggle Password"
+                )
+            }
+        }
     }
 }
+
 
 @Preview
 @Composable
