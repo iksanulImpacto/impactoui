@@ -113,13 +113,13 @@ fun AppBasicTextField(
                             Text(
                                 label,
                                 style = AppTextStyle.SmallNormal,
-                                modifier = Modifier.padding(bottom = 2.dp)
+                                modifier = Modifier.padding(bottom = 2.dp, start = 8.dp)
                             )
                         }
 
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth().padding(start = 8.dp)
                         ) {
                             if (value.isEmpty() && !placeholder.isNullOrEmpty() && !isFocused) {
                                 Text(
