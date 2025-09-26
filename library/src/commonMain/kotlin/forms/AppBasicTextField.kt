@@ -72,102 +72,107 @@ fun AppBasicTextField(
         else -> unfocusedBorderColor
     }
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = 50.dp)
-            .background(backgroundColor, RoundedCornerShape(8.dp))
-            .border(
-                width = 1.5.dp,
-                color = borderColor,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .padding(vertical = if (label.isNullOrEmpty()) 8.dp else 0.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // prefix
-        prefix?.let {
-            Box(modifier = Modifier.padding(start = 12.dp)) { it() }
-            Spacer(Modifier.width(8.dp))
-        }
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .heightIn(min = 50.dp)
+                .background(backgroundColor, RoundedCornerShape(8.dp))
+                .border(
+                    width = 1.5.dp,
+                    color = borderColor,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(vertical = if (label.isNullOrEmpty()) 8.dp else 0.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // prefix
+            prefix?.let {
+                Box(modifier = Modifier.padding(start = 12.dp)) { it() }
+                Spacer(Modifier.width(8.dp))
+            }
 
-        Column(modifier = Modifier.weight(1f)) {
-            BasicTextField(
-                value = value,
-                onValueChange = onValueChange,
-                singleLine = true,
-                textStyle = AppTextStyle.MediumNormal,
-                visualTransformation = if (isSecure && !isPasswordVisible) {
-                    PasswordVisualTransformation()
-                } else {
-                    VisualTransformation.None
-                },
-                keyboardOptions = KeyboardOptions.Default,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 4.dp, vertical = 8.dp)
-                    .onFocusChanged { },
-                decorationBox = { innerTextField ->
-                    Column {
-                        if (!label.isNullOrEmpty()) {
-                            Text(
-                                label,
-                                style = AppTextStyle.SmallNormal,
-                                modifier = Modifier.padding(bottom = 2.dp, start = 8.dp)
-                            )
-                        }
-
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth().padding(start = 8.dp)
-                        ) {
-                            if (value.isEmpty() && !placeholder.isNullOrEmpty() && !isFocused) {
+            Column(modifier = Modifier.weight(1f)) {
+                BasicTextField(
+                    value = value,
+                    onValueChange = onValueChange,
+                    singleLine = true,
+                    textStyle = AppTextStyle.MediumNormal,
+                    visualTransformation = if (isSecure && !isPasswordVisible) {
+                        PasswordVisualTransformation()
+                    } else {
+                        VisualTransformation.None
+                    },
+                    keyboardOptions = KeyboardOptions.Default,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp, vertical = 8.dp)
+                        .onFocusChanged { },
+                    decorationBox = { innerTextField ->
+                        Column {
+                            if (!label.isNullOrEmpty()) {
                                 Text(
-                                    text = placeholder,
-                                    style = AppTextStyle.MediumNormal.copy(color = AppColors.Grey400)
+                                    label,
+                                    style = AppTextStyle.SmallNormal,
+                                    modifier = Modifier.padding(bottom = 2.dp, start = 8.dp)
                                 )
                             }
-                            innerTextField()
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 8.dp)
+                            ) {
+                                if (value.isEmpty() && !placeholder.isNullOrEmpty() && !isFocused) {
+                                    Text(
+                                        text = placeholder,
+                                        style = AppTextStyle.MediumNormal.copy(color = AppColors.Grey400)
+                                    )
+                                }
+                                innerTextField()
+                            }
                         }
                     }
+                )
+            }
+
+            suffix?.let {
+                Spacer(Modifier.width(8.dp))
+                Box(modifier = Modifier.padding(end = 8.dp)) { it() }
+            }
+
+
+            trailingIcon?.let {
+                IconButton(onClick = { }) {
+                    it()
                 }
+            }
+
+
+            if (isSecure) {
+                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                    Icon(
+                        painter = painterResource(
+                            id = if (isPasswordVisible) R.drawable.ic_visibility
+                            else R.drawable.ic_visibility_off
+                        ),
+                        contentDescription = "Toggle Password"
+                    )
+                }
+            }
+        }
+
+        if (isError && !errorText.isNullOrEmpty()) {
+            Text(
+                text = errorText,
+                color = errorBorderColor,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )
-
-            if (isError && !errorText.isNullOrEmpty()) {
-                Text(
-                    text = errorText,
-                    color = errorBorderColor,
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(start = 16.dp, top = 4.dp)
-                )
-            }
-        }
-
-        suffix?.let {
-            Spacer(Modifier.width(8.dp))
-            Box(modifier = Modifier.padding(end = 8.dp)) { it() }
-        }
-
-
-        trailingIcon?.let {
-            IconButton(onClick = { }) {
-                it()
-            }
-        }
-
-
-        if (isSecure) {
-            IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
-                Icon(
-                    painter = painterResource(
-                        id = if (isPasswordVisible) R.drawable.ic_visibility
-                        else R.drawable.ic_visibility_off
-                    ),
-                    contentDescription = "Toggle Password"
-                )
-            }
         }
     }
+
 }
 
 
