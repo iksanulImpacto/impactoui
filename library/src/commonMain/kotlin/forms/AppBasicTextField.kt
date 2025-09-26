@@ -167,8 +167,8 @@ fun AppBasicTextField(
             Text(
                 text = errorText,
                 color = errorBorderColor,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                style = AppTextStyle.SmallNormal,
+                modifier = Modifier.padding(top = 8.dp)
             )
         }
     }
@@ -186,7 +186,7 @@ fun Testing() {
         value = text,
         onValueChange = { text = it },
         placeholder = "Masukkan password",
-        isError = isError,
+        isError = true,
         errorText = "Password salah",
         isFocused = true,
         isSecure = true
