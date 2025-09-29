@@ -55,7 +55,6 @@ fun AppBasicTextField(
     isError: Boolean = false,
     label: String? = null,
     errorText: String? = null,
-    isFocused: Boolean = true,
     focusedBorderColor: Color = AppColors.Blue500,
     unfocusedBorderColor: Color = AppColors.Grey400,
     errorBorderColor: Color = MaterialTheme.colorScheme.error,
@@ -66,6 +65,8 @@ fun AppBasicTextField(
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
+    var isFocused by remember { mutableStateOf(false) } // track focus dynamically
+
     val borderColor = when {
         isError -> errorBorderColor
         isFocused -> focusedBorderColor
@@ -107,7 +108,9 @@ fun AppBasicTextField(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 4.dp, vertical = 8.dp)
-                        .onFocusChanged { },
+                        .onFocusChanged { focusState ->
+                            isFocused = focusState.isFocused
+                        },
                     decorationBox = { innerTextField ->
                         Column {
                             if (!label.isNullOrEmpty()) {
@@ -142,13 +145,9 @@ fun AppBasicTextField(
                 Box(modifier = Modifier.padding(end = 8.dp)) { it() }
             }
 
-
             trailingIcon?.let {
-                IconButton(onClick = { }) {
-                    it()
-                }
+                IconButton(onClick = { }) { it() }
             }
-
 
             if (isSecure) {
                 IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
@@ -172,8 +171,8 @@ fun AppBasicTextField(
             )
         }
     }
-
 }
+
 
 
 @Preview
@@ -188,7 +187,6 @@ fun Testing() {
         placeholder = "Masukkan password",
         isError = true,
         errorText = "Password salah",
-        isFocused = true,
         isSecure = true
     )
 }

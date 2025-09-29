@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
@@ -20,10 +22,11 @@ fun <T> GenericList(
     key: ((T) -> Any)? = null,
     onItemClick: (T) -> Unit = {},
     modifier: Modifier = Modifier,
-    rowContent: @Composable (T) -> Unit
+    state: LazyListState = rememberLazyListState(),
+    rowContent: @Composable (T) -> Unit,
 ) {
     Box(modifier) {
-        LazyColumn {
+        LazyColumn(state = state) {
             items(
                 items = list,
                 key = key
