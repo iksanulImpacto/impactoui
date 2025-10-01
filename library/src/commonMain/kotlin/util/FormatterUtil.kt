@@ -140,14 +140,18 @@ object FormatterUtil {
     }
 
     // --- Helper for number formatting (KMP safe) ---
-    private fun formatWithSeparator(number: Double, decimals: Int): String {
+    fun formatWithSeparator(number: Double, decimals: Int): String {
         val scale = 10.0.pow(decimals)
         val rounded = round(number * scale) / scale
-        val parts = rounded.toString().split(".")
+
+        val str = "%.${decimals}f".format(rounded)
+
+        val parts = str.split(".")
         val intPart = parts[0].reversed().chunked(3).joinToString(".").reversed()
         val decimalPart = if (decimals > 0) {
-            "." + parts.getOrNull(1).orEmpty().padEnd(decimals, '0').take(decimals)
+            "." + parts.getOrNull(1).orEmpty().padEnd(decimals, '0')
         } else ""
+
         return intPart + decimalPart
     }
 }
