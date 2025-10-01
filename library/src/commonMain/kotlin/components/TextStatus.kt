@@ -29,7 +29,7 @@ fun TextStatus(
             .height(28.dp)
             .background(color = color, shape = RoundedCornerShape(size = 8.dp))
             .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.Start),
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         content()
