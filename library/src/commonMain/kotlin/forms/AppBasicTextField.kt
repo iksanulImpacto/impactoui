@@ -172,21 +172,3 @@ fun AppBasicTextField(
         }
     }
 }
-
-
-
-@Preview
-@Composable
-fun Testing() {
-    var text by remember { mutableStateOf("") }
-    var isError by remember { mutableStateOf(false) }
-
-    AppBasicTextField(
-        value = text,
-        onValueChange = { text = it },
-        placeholder = "Masukkan password",
-        isError = true,
-        errorText = "Password salah",
-        isSecure = true
-    )
-}
