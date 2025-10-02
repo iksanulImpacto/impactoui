@@ -26,17 +26,7 @@ fun Dynamic3DButton(
     Button(
         onClick = onClick,
         enabled = enabled,
-        modifier = if(enabled)
-            modifier
-                .shadow(
-                    elevation = 6.dp, // bayangan untuk efek 3D
-                    shape = RoundedCornerShape(cornerRadius),
-                    clip = false
-                )
-                .background(
-                    color = Color(0xFFF5F7F9),
-                    shape = RoundedCornerShape(cornerRadius)
-                ) else modifier
+        modifier = modifier
             .shadow(
                 elevation = 6.dp, // bayangan untuk efek 3D
                 shape = RoundedCornerShape(cornerRadius),
@@ -55,8 +45,8 @@ fun Dynamic3DButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent, // pakai gradient manual
             contentColor = AppColors.White,
-            disabledContainerColor = Color.Transparent,
-            disabledContentColor = Color.White.copy(alpha = 0.3f)
+            disabledContainerColor = Color(0xFFF5F7F9),
+            disabledContentColor = Color(0xFFF5F7F9)
         ),
         contentPadding = PaddingValues(
             horizontal = 24.dp,
