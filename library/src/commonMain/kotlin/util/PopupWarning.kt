@@ -78,7 +78,7 @@ fun PopupHost() {
         firstEvent?.let { event ->
             currentPopup = event
             event.closeable.let {
-                if(!it) {
+                if(it) {
                     delay(event.time ?: 3000L)
                     PopupManager.remove(event)
                     currentPopup = null

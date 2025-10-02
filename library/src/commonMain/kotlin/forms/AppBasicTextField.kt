@@ -156,6 +156,7 @@ fun AppBasicTextField(
                             id = if (isPasswordVisible) R.drawable.ic_visibility
                             else R.drawable.ic_visibility_off
                         ),
+                        tint = Color.Unspecified,
                         contentDescription = "Toggle Password"
                     )
                 }

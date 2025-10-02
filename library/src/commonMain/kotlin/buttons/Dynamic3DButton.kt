@@ -26,7 +26,17 @@ fun Dynamic3DButton(
     Button(
         onClick = onClick,
         enabled = enabled,
-        modifier = modifier
+        modifier = if(enabled)
+            modifier
+                .shadow(
+                    elevation = 6.dp, // bayangan untuk efek 3D
+                    shape = RoundedCornerShape(cornerRadius),
+                    clip = false
+                )
+                .background(
+                    color = Color(0xFFF5F7F9),
+                    shape = RoundedCornerShape(cornerRadius)
+                ) else modifier
             .shadow(
                 elevation = 6.dp, // bayangan untuk efek 3D
                 shape = RoundedCornerShape(cornerRadius),
