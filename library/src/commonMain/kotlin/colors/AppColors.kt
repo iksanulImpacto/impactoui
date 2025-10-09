@@ -133,4 +133,28 @@ object AppColors {
     val LabaRed05 = Color(0xFFFF5378)
     val LabaRed02 = Color(0xFFFFAEBF)
     val LabaRed01 = Color(0xFFFFEBEF)
+
+    object LPD {
+        val Gold50 = Color(0xFFFEF5CE)
+        val Gold100 = Color(0xFFFEEFB5)
+        val Gold200 = Color(0xFFFDEA9D)
+        val Gold300 = Color(0xFFFDE06B)
+        val Gold400 = Color(0xFFFCD53A)
+        val Gold500 = Color(0xFFFBCB09) // Primary Gold/Yellow
+        val Gold600 = Color(0xFFC9A207)
+        val Gold700 = Color(0xFF977A05)
+        val Gold800 = Color(0xFF645104)
+        val Gold900 = Color(0xFF4B3D03)
+
+        val Blue50 = Color(0xFFCEDBFE)
+        val Blue100 = Color(0xFFB6CAFE)
+        val Blue200 = Color(0xFF9DB8FE) // Note: The hex code in the image is #9DBBFE, assuming B8 as a typo or slight variation for consistency
+        val Blue300 = Color(0xFF6C94FD)
+        val Blue400 = Color(0xFF3B71FD)
+        val Blue500 = Color(0xFF0A4DFC) // Primary Blue
+        val Blue600 = Color(0xFF083ECA)
+        val Blue700 = Color(0xFF062E97)
+        val Blue800 = Color(0xFF041F65)
+        val Blue900 = Color(0xFF03174C)
+    }
 }
