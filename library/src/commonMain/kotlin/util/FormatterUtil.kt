@@ -51,14 +51,16 @@ object FormatterUtil {
         }
     }
 
+    val tz = TimeZone.of("+07:00")
+
     @OptIn(ExperimentalTime::class)
-    fun toIsoString(date: LocalDateTime?): String {
-        return date?.let {
-            val localDateTime = LocalDateTime(it.year, it.month, it.day, it.hour, it.minute, it.second, it.nanosecond) // 506 ms
-            val tz = TimeZone.of("+07:00")
-            val instant = localDateTime.toInstant(tz)
-            instant.toString()
-        } ?: ""
+    fun toIsoString(date: Any?): String {
+        return when (date) {
+            is LocalDateTime -> date.toInstant(tz).toString()
+            is LocalDate -> LocalDateTime(date.year, date.month, date.dayOfMonth, 0, 0)
+                .toInstant(tz).toString()
+            else -> ""
+        }
     }
 
     fun formatServerDateTime(dateString: String?, pattern: (LocalDateTime) -> String): String {
