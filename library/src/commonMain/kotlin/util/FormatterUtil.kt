@@ -5,6 +5,7 @@ import kotlin.math.round
 import kotlin.math.pow
 import kotlin.time.ExperimentalTime
 
+
 object FormatterUtil {
 
     const val PATTERN_TIME_AND_DATE = "HH:mm:ss - dd/MM/yyyy"
@@ -29,6 +30,12 @@ object FormatterUtil {
     )
 
     // --- Date utilities ---
+    @OptIn(ExperimentalTime::class)
+    fun getTodayDate(): LocalDate {
+        val now = kotlin.time.Clock.System.now()
+        val zone = TimeZone.currentSystemDefault()
+        return now.toLocalDateTime(zone).date
+    }
 
     @OptIn(ExperimentalTime::class)
     fun Instant.toLocalDateTime(): LocalDateTime =
