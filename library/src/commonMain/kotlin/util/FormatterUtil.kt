@@ -51,6 +51,16 @@ object FormatterUtil {
         }
     }
 
+    @OptIn(ExperimentalTime::class)
+    fun toIsoString(date: LocalDateTime?): String {
+        return date?.let {
+            val localDateTime = LocalDateTime(it.year, it.month, it.day, it.hour, it.minute, it.second, it.nanosecond) // 506 ms
+            val tz = TimeZone.of("+07:00")
+            val instant = localDateTime.toInstant(tz)
+            instant.toString()
+        } ?: ""
+    }
+
     fun formatServerDateTime(dateString: String?, pattern: (LocalDateTime) -> String): String {
         val dateTime = parseServerDateTime(dateString) ?: return "-"
         return pattern(dateTime)
