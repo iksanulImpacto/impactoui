@@ -31,10 +31,10 @@ object FormatterUtil {
 
     // --- Date utilities ---
     @OptIn(ExperimentalTime::class)
-    fun getTodayDate(): LocalDate {
+    fun getTodayDate(): LocalDateTime {
         val now = kotlin.time.Clock.System.now()
         val zone = TimeZone.currentSystemDefault()
-        return now.toLocalDateTime(zone).date
+        return now.toLocalDateTime(zone)
     }
 
     @OptIn(ExperimentalTime::class)
