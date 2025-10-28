@@ -71,40 +71,43 @@ object PopupManager {
 // ----------------------------
 @Composable
 fun PopupHost() {
-    val firstEvent by remember { derivedStateOf { PopupManager.events.firstOrNull() } }
     var currentPopup by remember { mutableStateOf<PopupEvent?>(null) }
+    val events = PopupManager.events
 
-    LaunchedEffect(firstEvent) {
-        firstEvent?.let { event ->
+    // Worker coroutine yang memproses popup satu per satu
+    LaunchedEffect(events.size) {
+        if (currentPopup == null && events.isNotEmpty()) {
+            val event = events.first()
             currentPopup = event
-            event.closeable.let {
-                if(it) {
-                    delay(event.time ?: 3000L)
-                    PopupManager.remove(event)
-                    currentPopup = null
-                }
-            }
+
+            // Tunggu sesuai durasi popup
+            delay(event.time ?: 3000L)
+
+            // Hapus popup dan lanjut ke berikutnya
+            PopupManager.remove(event)
+            currentPopup = null
         }
     }
 
-    currentPopup?.let { event ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(WindowInsets.safeDrawing.asPaddingValues()),
-            contentAlignment = Alignment.TopCenter
-        ) {
-            AnimatedVisibility(
-                visible = true,
-                enter = expandVertically(),
-                exit = shrinkVertically()
-            ) {
-                val (bgColor, borderColor, iconRes) = when (event.type) {
-                    PopupType.SUCCESS -> Triple(Color.White, AppColors.Green500, R.drawable.ic_check_circle)
-                    PopupType.ERROR -> Triple(Color.White, AppColors.Red500, R.drawable.ic_error_circle)
-                    PopupType.WARNING -> Triple(Color.White, AppColors.Amber500, R.drawable.ic_warning_circle)
-                }
+    // Tampilkan popup saat ada event aktif
+    AnimatedVisibility(
+        visible = currentPopup != null,
+        enter = expandVertically(),
+        exit = shrinkVertically()
+    ) {
+        currentPopup?.let { event ->
+            val (bgColor, borderColor, iconRes) = when (event.type) {
+                PopupType.SUCCESS -> Triple(Color.White, AppColors.Green500, R.drawable.ic_check_circle)
+                PopupType.ERROR -> Triple(Color.White, AppColors.Red500, R.drawable.ic_error_circle)
+                PopupType.WARNING -> Triple(Color.White, AppColors.Amber500, R.drawable.ic_warning_circle)
+            }
 
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(WindowInsets.safeDrawing.asPaddingValues()),
+                contentAlignment = Alignment.TopCenter
+            ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
@@ -130,4 +133,5 @@ fun PopupHost() {
         }
     }
 }
+
 

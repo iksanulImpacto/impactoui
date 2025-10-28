@@ -35,8 +35,8 @@ fun Dynamic3DButton(
             .background(
                 brush = Brush.verticalGradient(
                     listOf(
-                        AppColors.Blue500, // biru terang atas
-                        AppColors.Blue700  // biru agak gelap bawah
+                        if(enabled) AppColors.Blue500 else Color(0xFFF5F7F9), // biru terang atas
+                        if(enabled) AppColors.Blue700 else Color(0xFFF5F7F9) // biru agak gelap bawah
                     )
                 ),
                 shape = RoundedCornerShape(cornerRadius)
