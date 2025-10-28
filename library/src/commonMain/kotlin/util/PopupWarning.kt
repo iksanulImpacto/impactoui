@@ -20,7 +20,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -29,10 +28,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.impacto.impactoui.R
 import com.impacto.impactoui.colors.AppColors
 import kotlinx.coroutines.delay
 
@@ -81,17 +78,14 @@ fun PopupHost() {
                 val event = events.first()
                 currentPopup = event
 
-                // Tampilkan popup untuk durasi tertentu
                 delay(event.time ?: 3000L)
 
-                // Tutup popup & hapus dari antrian
                 PopupManager.remove(event)
                 currentPopup = null
 
-                // Delay kecil agar animasi shrink sempat main
                 delay(250L)
             } else {
-                delay(100L) // idle loop
+                delay(100L)
             }
         }
     }
@@ -102,10 +96,10 @@ fun PopupHost() {
         exit = shrinkVertically()
     ) {
         currentPopup?.let { event ->
-            val (bgColor, borderColor, iconRes) = when (event.type) {
-                PopupType.SUCCESS -> Triple(Color.White, AppColors.Green500, R.drawable.ic_check_circle)
-                PopupType.ERROR -> Triple(Color.White, AppColors.Red500, R.drawable.ic_error_circle)
-                PopupType.WARNING -> Triple(Color.White, AppColors.Amber500, R.drawable.ic_warning_circle)
+            val (bgColor, borderColor, iconResName) = when (event.type) {
+                PopupType.SUCCESS -> Triple(Color.White, AppColors.Green500, "ic_check_circle")
+                PopupType.ERROR -> Triple(Color.White, AppColors.Red500, "ic_error_circle")
+                PopupType.WARNING -> Triple(Color.White, AppColors.Amber500, "ic_warning_circle")
             }
 
             Box(
@@ -123,7 +117,7 @@ fun PopupHost() {
                         .padding(horizontal = 16.dp, vertical = 12.dp)
                 ) {
                     Icon(
-                        painter = painterResource(id = iconRes),
+                        painter = imageResource(named = iconResName),
                         contentDescription = null,
                         tint = borderColor,
                         modifier = Modifier.size(24.dp)
@@ -139,6 +133,3 @@ fun PopupHost() {
         }
     }
 }
-
-
-
