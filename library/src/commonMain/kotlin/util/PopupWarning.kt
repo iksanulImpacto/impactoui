@@ -71,25 +71,31 @@ object PopupManager {
 // ----------------------------
 @Composable
 fun PopupHost() {
-    var currentPopup by remember { mutableStateOf<PopupEvent?>(null) }
     val events = PopupManager.events
+    var currentPopup by remember { mutableStateOf<PopupEvent?>(null) }
 
-    // Worker coroutine yang memproses popup satu per satu
-    LaunchedEffect(events.size) {
-        if (currentPopup == null && events.isNotEmpty()) {
-            val event = events.first()
-            currentPopup = event
+    // Coroutine ini selalu jalan, looping cek queue
+    LaunchedEffect(Unit) {
+        while (true) {
+            if (currentPopup == null && events.isNotEmpty()) {
+                val event = events.first()
+                currentPopup = event
 
-            // Tunggu sesuai durasi popup
-            delay(event.time ?: 3000L)
+                // Tampilkan popup untuk durasi tertentu
+                delay(event.time ?: 3000L)
 
-            // Hapus popup dan lanjut ke berikutnya
-            PopupManager.remove(event)
-            currentPopup = null
+                // Tutup popup & hapus dari antrian
+                PopupManager.remove(event)
+                currentPopup = null
+
+                // Delay kecil agar animasi shrink sempat main
+                delay(250L)
+            } else {
+                delay(100L) // idle loop
+            }
         }
     }
 
-    // Tampilkan popup saat ada event aktif
     AnimatedVisibility(
         visible = currentPopup != null,
         enter = expandVertically(),
@@ -133,5 +139,6 @@ fun PopupHost() {
         }
     }
 }
+
 
 
