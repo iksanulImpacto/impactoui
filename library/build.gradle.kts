@@ -27,8 +27,8 @@ kotlin {
 
 //    // Target iOS
 //    iosX64()
-//    iosArm64()
-//    iosSimulatorArm64()
+    iosArm64()
+    iosSimulatorArm64()
 
     // Opsional tambahan (Linux)
 //    linuxX64()
@@ -40,13 +40,12 @@ kotlin {
                 implementation(libs.foundation)
                 implementation(libs.material3)
                 implementation(libs.kotlinx.datetime)
-                implementation(libs.compose.ui.tooling)
-                implementation(libs.compose.ui.tooling.preview)
-
             }
         }
         val androidMain by getting {
             dependencies {
+                implementation(libs.compose.ui.tooling)
+                implementation(libs.compose.ui.tooling.preview)
             }
         }
         val commonTest by getting {

@@ -1,1 +1,1 @@
-/Users/impacto/.konan/kotlin-native-prebuilt-macos-aarch64-2.1.21/klib/commonized/2.1.21
+/Users/iksanul15/.konan/kotlin-native-prebuilt-macos-aarch64-2.1.21/klib/commonized/2.1.21
