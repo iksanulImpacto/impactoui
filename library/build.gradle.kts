@@ -53,6 +53,11 @@ kotlin {
                 implementation(libs.kotlin.test)
             }
         }
+
+        val iosMain by creating {
+            dependsOn(commonMain)
+        }
+
     }
 }
 
