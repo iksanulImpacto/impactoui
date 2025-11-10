@@ -28,8 +28,8 @@ kotlin {
 
 //    // Target iOS
 //    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+//    iosArm64()
+//    iosSimulatorArm64()
 
     // Opsional tambahan (Linux)
 //    linuxX64()
@@ -57,6 +57,12 @@ kotlin {
         }
 
         val iosMain by creating {
+            dependsOn(commonMain)
+        }
+        val iosArm64Main by creating {
+            dependsOn(commonMain)
+        }
+        val iosSimulatorArm64Main by creating {
             dependsOn(commonMain)
         }
 
