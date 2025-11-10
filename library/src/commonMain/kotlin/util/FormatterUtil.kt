@@ -1,9 +1,15 @@
 package com.impacto.impactoui.util
 
-import kotlinx.datetime.*
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.number
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import kotlin.math.round
 import kotlin.math.pow
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 
 object FormatterUtil {
@@ -57,7 +63,7 @@ object FormatterUtil {
     fun toIsoString(date: Any?): String {
         return when (date) {
             is LocalDateTime -> date.toInstant(tz).toString()
-            is LocalDate -> LocalDateTime(date.year, date.month, date.dayOfMonth, 0, 0)
+            is LocalDate -> LocalDateTime(date.year, date.month, date.day, 0, 0)
                 .toInstant(tz).toString()
             else -> ""
         }
@@ -69,8 +75,8 @@ object FormatterUtil {
     }
 
     fun dateToFullDateStringWithTime(dateTime: LocalDateTime): String {
-        val day = dateTime.dayOfMonth
-        val month = FULL_MONTHS[dateTime.monthNumber - 1]
+        val day = dateTime.day
+        val month = FULL_MONTHS[dateTime.month.number - 1]
         val year = dateTime.year
         val hour = dateTime.hour.toString().padStart(2, '0')
         val minute = dateTime.minute.toString().padStart(2, '0')
@@ -78,15 +84,15 @@ object FormatterUtil {
     }
 
     fun dateToFullDateString(dateTime: LocalDateTime): String {
-        val day = dateTime.dayOfMonth
-        val month = FULL_MONTHS[dateTime.monthNumber - 1]
+        val day = dateTime.day
+        val month = FULL_MONTHS[dateTime.month.number - 1]
         val year = dateTime.year
         return "$day $month $year"
     }
 
     fun dateToShortStringWithTime(dateTime: LocalDateTime): String {
-        val day = dateTime.dayOfMonth
-        val month = SHORT_MONTHS[dateTime.monthNumber - 1]
+        val day = dateTime.day
+        val month = SHORT_MONTHS[dateTime.month.number - 1]
         val year = dateTime.year
         val hour = dateTime.hour.toString().padStart(2, '0')
         val minute = dateTime.minute.toString().padStart(2, '0')
@@ -100,20 +106,20 @@ object FormatterUtil {
     }
 
     fun dateToShortString(dateTime: LocalDateTime): String {
-        val day = dateTime.dayOfMonth
-        val month = SHORT_MONTHS[dateTime.monthNumber - 1]
+        val day = dateTime.day
+        val month = SHORT_MONTHS[dateTime.month.number - 1]
         val year = dateTime.year
         return "$day $month $year"
     }
 
     fun dateToMonthYearString(dateTime: LocalDateTime): String {
-        val month = SHORT_MONTHS[dateTime.monthNumber - 1]
+        val month = SHORT_MONTHS[dateTime.month.number - 1]
         return "$month ${dateTime.year}"
     }
 
     fun dateToDayMonthString(dateTime: LocalDateTime): String {
-        val day = dateTime.dayOfMonth
-        val month = SHORT_MONTHS[dateTime.monthNumber - 1]
+        val day = dateTime.day
+        val month = SHORT_MONTHS[dateTime.month.number - 1]
         return "$day $month"
     }
 
@@ -163,14 +169,38 @@ object FormatterUtil {
         val scale = 10.0.pow(decimals)
         val rounded = round(number * scale) / scale
 
-        val str = "%.${decimals}f".format(rounded)
+        // Ganti baris ini
+        // val str = "%.${decimals}f".format(rounded)
+        // dengan yang ini:
+        val str = rounded.format(decimals)
 
         val parts = str.split(".")
         val intPart = parts[0].reversed().chunked(3).joinToString(".").reversed()
-        val decimalPart = if (decimals > 0) {
-            "." + parts.getOrNull(1).orEmpty().padEnd(decimals, '0')
-        } else ""
+
+        val decimalPart = if (decimals > 0 && parts.size > 1) {
+            "." + parts[1]
+        } else if (decimals > 0) {
+            "." + "".padEnd(decimals, '0')
+        } else {
+            ""
+        }
 
         return intPart + decimalPart
+    }
+
+    private fun Double.format(decimals: Int): String {
+        val factor = 10.0.pow(decimals)
+        val rounded = round(this * factor) / factor
+
+        val wholePart = rounded.toLong()
+        val fractionalPart = ((rounded - wholePart) * factor).toLong()
+
+        val fractionalString = if (decimals > 0) {
+            ".${fractionalPart.toString().padStart(decimals, '0')}"
+        } else {
+            ""
+        }
+
+        return "$wholePart$fractionalString"
     }
 }

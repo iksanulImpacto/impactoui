@@ -31,7 +31,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.impacto.impactoui.colors.AppColors
+import com.impacto.impactoui.library.generated.resources.Res
+import com.impacto.impactoui.library.generated.resources.ic_check_circle
+import com.impacto.impactoui.library.generated.resources.ic_error_circle
+import com.impacto.impactoui.library.generated.resources.ic_warning_circle
 import kotlinx.coroutines.delay
+import org.jetbrains.compose.resources.painterResource
 
 enum class PopupType { SUCCESS, ERROR, WARNING }
 
@@ -97,9 +102,9 @@ fun PopupHost() {
     ) {
         currentPopup?.let { event ->
             val (bgColor, borderColor, iconResName) = when (event.type) {
-                PopupType.SUCCESS -> Triple(Color.White, AppColors.Green500, "ic_check_circle")
-                PopupType.ERROR -> Triple(Color.White, AppColors.Red500, "ic_error_circle")
-                PopupType.WARNING -> Triple(Color.White, AppColors.Amber500, "ic_warning_circle")
+                PopupType.SUCCESS -> Triple(Color.White, AppColors.Green500, Res.drawable.ic_check_circle)
+                PopupType.ERROR -> Triple(Color.White, AppColors.Red500, Res.drawable.ic_error_circle)
+                PopupType.WARNING -> Triple(Color.White, AppColors.Amber500, Res.drawable.ic_warning_circle)
             }
 
             Box(
@@ -117,7 +122,7 @@ fun PopupHost() {
                         .padding(horizontal = 16.dp, vertical = 12.dp)
                 ) {
                     Icon(
-                        painter = imageResource(named = iconResName),
+                        painter = painterResource(resource = iconResName),
                         contentDescription = null,
                         tint = borderColor,
                         modifier = Modifier.size(24.dp)

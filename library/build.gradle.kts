@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.composeMultiplatform)
 }
 
 group = "com.impacto.impactoui"
@@ -40,6 +41,7 @@ kotlin {
                 implementation(libs.foundation)
                 implementation(libs.material3)
                 implementation(libs.kotlinx.datetime)
+                implementation(compose.components.resources)
             }
         }
         val androidMain by getting {
