@@ -28,8 +28,8 @@ kotlin {
 
 //    // Target iOS
 //    iosX64()
-//    iosArm64()
-//    iosSimulatorArm64()
+    iosArm64()
+    iosSimulatorArm64()
 
     // Opsional tambahan (Linux)
 //    linuxX64()
@@ -56,16 +56,20 @@ kotlin {
             }
         }
 
-        val iosMain by creating {
-            dependsOn(commonMain)
-        }
-        val iosArm64Main by creating {
-            dependsOn(commonMain)
-        }
-        val iosSimulatorArm64Main by creating {
-            dependsOn(commonMain)
-        }
+        // --- Perbaikan Hirarki iOS ---
+        // Dapatkan referensi ke source set yang dibuat otomatis oleh target iOS
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
 
+        // Buat source set perantara 'iosMain' untuk berbagi kode antar target iOS
+        val iosMain by creating {
+            // iosMain bergantung pada commonMain
+            dependsOn(commonMain)
+
+            // Buat target spesifik (iosArm64, iosSimulatorArm64) bergantung pada iosMain
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+        }
     }
 }
 
