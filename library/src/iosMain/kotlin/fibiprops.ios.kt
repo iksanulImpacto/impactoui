@@ -1,4 +1,4 @@
 package com.impacto.impactoui
 
-actual val firstElement: Int = 3
-actual val secondElement: Int = 4
+//actual val firstElement: Int = 3
+//actual val secondElement: Int = 4

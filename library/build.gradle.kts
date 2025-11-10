@@ -93,3 +93,55 @@ repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
+
+publishing {
+    repositories {
+        maven {
+            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            credentials {
+                username = findProperty("ossrhUsername")?.toString()
+                password = findProperty("ossrhPassword")?.toString()
+            }
+        }
+    }
+}
+
+//
+//mavenPublishing {
+//    coordinates(
+//        groupId = "com.impacto.impactoui",
+//        artifactId = "impactoui", // Nama pustaka Anda
+//        version = "1.0.0"
+//    )
+//
+//    pom {
+//        name.set("ImpactoUI")
+//        description.set("A set of custom UI components for Compose Multiplatform.")
+//        url.set("https://github.com/iksanul15/impactoui") // URL proyek Anda
+//
+//        licenses {
+//            license {
+//                name.set("The Apache License, Version 2.0")
+//                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+//            }
+//        }
+//        developers {
+//            developer {
+//                id.set("iksanul15") // username GitHub/id Anda
+//                name.set("Muhammad Iksanul")
+//                email.set("iksanul@impacto.id")
+//            }
+//        }
+//        scm {
+//            url.set("https://github.com/iksanul15/impactoui")
+//            connection.set("scm:git:github.com/iksanul15/impactoui.git")
+//            developerConnection.set("scm:git:ssh://github.com/iksanul15/impactoui.git")
+//        }
+//    }
+//
+//    // Ini akan mempublikasikan ke Sonatype (staging)
+//    publishToMavenCentral()
+//
+//    // Tandatangani semua publikasi
+//    signAllPublications()
+//}
