@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.impacto.impactoui.colors.AppColors
 
@@ -18,6 +19,11 @@ import com.impacto.impactoui.colors.AppColors
 fun Dynamic3DButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    listColor: List<Color> = listOf(
+        if(enabled) AppColors.Blue500 else Color(0xFFF5F7F9), // biru terang atas
+        if(enabled) AppColors.Blue700 else Color(0xFFF5F7F9) // biru agak gelap bawah
+    ),
+    elevationShadow: Dp = 4.dp,
     onClick: () -> Unit,
     content: @Composable RowScope.() -> Unit
 ) {
@@ -28,16 +34,13 @@ fun Dynamic3DButton(
         enabled = enabled,
         modifier = modifier
             .shadow(
-                elevation = 6.dp, // bayangan untuk efek 3D
+                elevation = elevationShadow, // bayangan untuk efek 3D
                 shape = RoundedCornerShape(cornerRadius),
                 clip = false
             )
             .background(
                 brush = Brush.verticalGradient(
-                    listOf(
-                        if(enabled) AppColors.Blue500 else Color(0xFFF5F7F9), // biru terang atas
-                        if(enabled) AppColors.Blue700 else Color(0xFFF5F7F9) // biru agak gelap bawah
-                    )
+                    listColor
                 ),
                 shape = RoundedCornerShape(cornerRadius)
             ),

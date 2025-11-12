@@ -105,6 +105,13 @@ object FormatterUtil {
         return "$hour:$minute"
     }
 
+    fun dateToHourMinuteSecond(dateTime: LocalDateTime): String {
+        val hour = dateTime.hour.toString().padStart(2, '0')
+        val minute = dateTime.minute.toString().padStart(2, '0')
+        val second = dateTime.second.toString().padStart(2, '0')
+        return "$hour:$minute:$second"
+    }
+
     fun dateToShortString(dateTime: LocalDateTime): String {
         val day = dateTime.day
         val month = SHORT_MONTHS[dateTime.month.number - 1]
