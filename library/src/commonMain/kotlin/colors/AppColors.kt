@@ -157,4 +157,40 @@ object AppColors {
         val Blue800 = Color(0xFF041F65)
         val Blue900 = Color(0xFF03174C)
     }
+
+    object BillId {
+
+        // 🌊 TEAL PALETTE (kiri)
+        val Teal50 = Color(0xFFF0FEFD)
+        val Teal100 = Color(0xFFE2FCFA)
+        val Teal200 = Color(0xFFC5F9F5)
+        val Teal300 = Color(0xFFA8F7F1)
+        val Teal400 = Color(0xFF8BF4EC)
+        val Teal500 = Color(0xFF6EF1E7)
+        val Teal600 = Color(0xFF59CBC2)
+        val Teal700 = Color(0xFF44A59D)
+        val Teal800 = Color(0xFF2F7E79)
+        val Teal900 = Color(0xFF1A5854)
+
+        // 💙 BLUE PALETTE (kanan)
+        val Blue50 = Color(0xFFEAF0FE)
+        val Blue100 = Color(0xFFD5E1FD)
+        val Blue200 = Color(0xFFABC3FB)
+        val Blue300 = Color(0xFF81A4F9)
+        val Blue400 = Color(0xFF5786F7)
+        val Blue500 = Color(0xFF2D68F5)
+        val Blue600 = Color(0xFF2453C4)
+        val Blue700 = Color(0xFF1B3E93)
+        val Blue800 = Color(0xFF122A62)
+        val Blue900 = Color(0xFF091531)
+    }
+
+    // 🩶 Netral atau tambahan umum (opsional)
+    object Neutral {
+        val White = Color(0xFFFFFFFF)
+        val Black = Color(0xFF000000)
+        val Background = Color(0xFFF2F4F5)
+        val Grey10 = Color(0xFF9CA3AF)
+        val Grey20 = Color(0xFF6B7280)
+    }
 }

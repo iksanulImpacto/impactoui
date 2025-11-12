@@ -41,15 +41,12 @@ kotlin {
                 implementation(libs.material3)
                 implementation(libs.kotlinx.datetime)
                 implementation(compose.components.resources)
-                implementation(libs.kamel.image)
             }
         }
         val androidMain by getting {
             dependencies {
                 implementation(libs.compose.ui.tooling)
                 implementation(libs.compose.ui.tooling.preview)
-
-                implementation(libs.coil.compose)
             }
         }
         val commonTest by getting {
