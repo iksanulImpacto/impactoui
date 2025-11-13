@@ -2,50 +2,42 @@ package com.impacto.impactoui.forms
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicSecureTextField
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-//import androidx.compose.material.icons.Icons
-//import androidx.compose.material.icons.filled.KeyboardArrowDown
-//import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import org.jetbrains.compose.resources.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-//import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-//import com.impacto.impactoui.R
 import com.impacto.impactoui.colors.AppColors
 import com.impacto.impactoui.library.generated.resources.Res
 import com.impacto.impactoui.library.generated.resources.ic_visibility
 import com.impacto.impactoui.library.generated.resources.ic_visibility_off
 import com.impacto.impactoui.textStyle.AppTextStyle
+import org.jetbrains.compose.resources.painterResource
+
+/* -------------------------------------------------------------
+ * OVERLOAD 1: MODE STATE (TextFieldState)
+ * ------------------------------------------------------------- */
 
 @Composable
 fun AppBasicTextField(
     modifier: Modifier = Modifier,
-    value: String = "",
-    onValueChange: (String) -> Unit = {},
+    state: TextFieldState,
+    style: TextStyle = AppTextStyle.MediumNormal,
     placeholder: String? = null,
     isError: Boolean = false,
     label: String? = null,
@@ -55,12 +47,154 @@ fun AppBasicTextField(
     errorBorderColor: Color = MaterialTheme.colorScheme.error,
     backgroundColor: Color = Color.White,
     isSecure: Boolean = false,
+    enabled: Boolean = true,
+    singleLine: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE,
     prefix: @Composable (() -> Unit)? = null,
     suffix: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null
+    trailingIcon: @Composable (() -> Unit)? = null,
+    shape: RoundedCornerShape = RoundedCornerShape(8.dp),
+) {
+    val text = state.text.toString()
+    val lineLimits =
+        if (singleLine) TextFieldLineLimits.SingleLine else TextFieldLineLimits.MultiLine(maxHeightInLines = maxLines)
+
+    AppBasicTextFieldCore(
+        modifier = modifier,
+        text = text,
+        style = style,
+        placeholder = placeholder,
+        isError = isError,
+        label = label,
+        errorText = errorText,
+        focusedBorderColor = focusedBorderColor,
+        unfocusedBorderColor = unfocusedBorderColor,
+        errorBorderColor = errorBorderColor,
+        backgroundColor = backgroundColor,
+        isSecure = isSecure,
+        enabled = enabled,
+        prefix = prefix,
+        suffix = suffix,
+        trailingIcon = trailingIcon,
+        shape = shape
+    ) { fieldModifier, isPasswordVisible, decoration ->
+        if (isSecure && !isPasswordVisible) {
+            BasicSecureTextField(
+                state = state,
+                textStyle = style,
+                enabled = enabled,
+                keyboardOptions = KeyboardOptions.Default,
+                modifier = fieldModifier,
+                decorator = decoration
+            )
+        } else {
+            BasicTextField(
+                state = state,
+                textStyle = style,
+                enabled = enabled,
+                keyboardOptions = KeyboardOptions.Default,
+                modifier = fieldModifier,
+                lineLimits = lineLimits,
+                decorator = decoration
+            )
+        }
+    }
+}
+
+/* -------------------------------------------------------------
+ * OVERLOAD 2: MODE VALUE + onValueChange
+ * ------------------------------------------------------------- */
+
+@Composable
+fun AppBasicTextField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    style: TextStyle = AppTextStyle.MediumNormal,
+    placeholder: String? = null,
+    isError: Boolean = false,
+    label: String? = null,
+    errorText: String? = null,
+    focusedBorderColor: Color = AppColors.Blue500,
+    unfocusedBorderColor: Color = AppColors.Grey400,
+    errorBorderColor: Color = MaterialTheme.colorScheme.error,
+    backgroundColor: Color = Color.White,
+    isSecure: Boolean = false,
+    enabled: Boolean = true,
+    singleLine: Boolean = true,
+    prefix: @Composable (() -> Unit)? = null,
+    suffix: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    shape: RoundedCornerShape = RoundedCornerShape(8.dp),
+) {
+    AppBasicTextFieldCore(
+        modifier = modifier,
+        text = value,
+        style = style,
+        placeholder = placeholder,
+        isError = isError,
+        label = label,
+        errorText = errorText,
+        focusedBorderColor = focusedBorderColor,
+        unfocusedBorderColor = unfocusedBorderColor,
+        errorBorderColor = errorBorderColor,
+        backgroundColor = backgroundColor,
+        isSecure = isSecure,
+        enabled = enabled,
+        prefix = prefix,
+        suffix = suffix,
+        trailingIcon = trailingIcon,
+        shape = shape
+    ) { fieldModifier, isPasswordVisible, decoration ->
+        BasicTextField(
+            value = value,
+            onValueChange = onValueChange,
+            singleLine = singleLine,
+            textStyle = style,
+            visualTransformation = if (isSecure && !isPasswordVisible) {
+                PasswordVisualTransformation()
+            } else {
+                VisualTransformation.None
+            },
+            enabled = enabled,
+            keyboardOptions = KeyboardOptions.Default,
+            modifier = fieldModifier,
+            decorationBox = decoration
+        )
+    }
+}
+
+/* -------------------------------------------------------------
+ * CORE LAYOUT (dipakai kedua overload)
+ * ------------------------------------------------------------- */
+
+@Composable
+private fun AppBasicTextFieldCore(
+    modifier: Modifier,
+    text: String,
+    style: TextStyle,
+    placeholder: String?,
+    isError: Boolean,
+    label: String?,
+    errorText: String?,
+    focusedBorderColor: Color,
+    unfocusedBorderColor: Color,
+    errorBorderColor: Color,
+    backgroundColor: Color,
+    isSecure: Boolean,
+    enabled: Boolean,
+    prefix: @Composable (() -> Unit)?,
+    suffix: @Composable (() -> Unit)?,
+    trailingIcon: @Composable (() -> Unit)?,
+    shape: RoundedCornerShape,
+    fieldContent: @Composable (
+        fieldModifier: Modifier,
+        isPasswordVisible: Boolean,
+        decoration: @Composable (@Composable () -> Unit) -> Unit
+    ) -> Unit
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
-    var isFocused by remember { mutableStateOf(false) } // track focus dynamically
+    var isFocused by remember { mutableStateOf(false) }
 
     val borderColor = when {
         isError -> errorBorderColor
@@ -73,11 +207,11 @@ fun AppBasicTextField(
             modifier = modifier
                 .fillMaxWidth()
                 .heightIn(min = 50.dp)
-                .background(backgroundColor, RoundedCornerShape(8.dp))
+                .background(backgroundColor, shape)
                 .border(
                     width = 1.5.dp,
                     color = borderColor,
-                    shape = RoundedCornerShape(8.dp)
+                    shape = shape
                 )
                 .padding(vertical = if (label.isNullOrEmpty()) 8.dp else 0.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -89,50 +223,46 @@ fun AppBasicTextField(
             }
 
             Column(modifier = Modifier.weight(1f)) {
-                BasicTextField(
-                    value = value,
-                    onValueChange = onValueChange,
-                    singleLine = true,
-                    textStyle = AppTextStyle.MediumNormal,
-                    visualTransformation = if (isSecure && !isPasswordVisible) {
-                        PasswordVisualTransformation()
-                    } else {
-                        VisualTransformation.None
-                    },
-                    keyboardOptions = KeyboardOptions.Default,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 4.dp, vertical = 8.dp)
-                        .onFocusChanged { focusState ->
-                            isFocused = focusState.isFocused
-                        },
-                    decorationBox = { innerTextField ->
-                        Column {
-                            if (!label.isNullOrEmpty()) {
+
+                val fieldModifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp, vertical = 8.dp)
+                    .onFocusChanged { focusState ->
+                        isFocused = focusState.isFocused
+                    }
+
+                // dekorasi bersama
+                val decoration: @Composable (@Composable () -> Unit) -> Unit = { innerTextField ->
+                    Column {
+                        if (!label.isNullOrEmpty()) {
+                            Text(
+                                label,
+                                style = AppTextStyle.SmallNormal,
+                                modifier = Modifier.padding(bottom = 2.dp, start = 8.dp)
+                            )
+                        }
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 8.dp)
+                        ) {
+                            if (text.isEmpty() &&
+                                !placeholder.isNullOrEmpty() &&
+                                !isFocused
+                            ) {
                                 Text(
-                                    label,
-                                    style = AppTextStyle.SmallNormal,
-                                    modifier = Modifier.padding(bottom = 2.dp, start = 8.dp)
+                                    text = placeholder,
+                                    style = style.copy(color = AppColors.Grey400)
                                 )
                             }
-
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 8.dp)
-                            ) {
-                                if (value.isEmpty() && !placeholder.isNullOrEmpty() && !isFocused) {
-                                    Text(
-                                        text = placeholder,
-                                        style = AppTextStyle.MediumNormal.copy(color = AppColors.Grey400)
-                                    )
-                                }
-                                innerTextField()
-                            }
+                            innerTextField()
                         }
                     }
-                )
+                }
+
+                fieldContent(fieldModifier, isPasswordVisible, decoration)
             }
 
             suffix?.let {
@@ -145,7 +275,10 @@ fun AppBasicTextField(
             }
 
             if (isSecure) {
-                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                IconButton(
+                    enabled = enabled,
+                    onClick = { isPasswordVisible = !isPasswordVisible }
+                ) {
                     Icon(
                         painter = painterResource(
                             if (isPasswordVisible) Res.drawable.ic_visibility
