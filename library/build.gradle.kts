@@ -110,7 +110,7 @@ mavenPublishing {
     coordinates(
         groupId = "io.github.iksanulimpacto",
         artifactId = "impactoui", // Nama pustaka Anda
-        version = "1.0.3"
+        version = "1.0.4"
     )
 
     pom {
