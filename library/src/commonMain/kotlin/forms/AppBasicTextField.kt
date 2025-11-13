@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -27,6 +26,7 @@ import com.impacto.impactoui.library.generated.resources.Res
 import com.impacto.impactoui.library.generated.resources.ic_visibility
 import com.impacto.impactoui.library.generated.resources.ic_visibility_off
 import com.impacto.impactoui.textStyle.AppTextStyle
+import com.impacto.impactoui.textStyle.TextModifier
 import org.jetbrains.compose.resources.painterResource
 
 /* -------------------------------------------------------------
@@ -37,11 +37,22 @@ import org.jetbrains.compose.resources.painterResource
 fun AppBasicTextField(
     modifier: Modifier = Modifier,
     state: TextFieldState,
-    style: TextStyle = AppTextStyle.MediumNormal,
     placeholder: String? = null,
     isError: Boolean = false,
     label: String? = null,
     errorText: String? = null,
+    labelStyle: TextModifier  = TextModifier.apply {
+        textModifier = Modifier.padding(bottom = 2.dp, start = 8.dp)
+        textStyle = AppTextStyle.SmallNormal
+    },
+    placeholderStyle: TextModifier = TextModifier.apply {
+        textColor = AppColors.Grey400
+        textStyle = AppTextStyle.MediumNormal
+    },
+    valueStyle: TextModifier = TextModifier.apply {
+        textColor = AppColors.Grey400
+        textStyle = AppTextStyle.MediumNormal
+    },
     focusedBorderColor: Color = AppColors.Blue500,
     unfocusedBorderColor: Color = AppColors.Grey400,
     errorBorderColor: Color = MaterialTheme.colorScheme.error,
@@ -62,10 +73,11 @@ fun AppBasicTextField(
     AppBasicTextFieldCore(
         modifier = modifier,
         text = text,
-        style = style,
         placeholder = placeholder,
         isError = isError,
         label = label,
+        labelStyle = labelStyle,
+        placeholderStyle = placeholderStyle,
         errorText = errorText,
         focusedBorderColor = focusedBorderColor,
         unfocusedBorderColor = unfocusedBorderColor,
@@ -81,7 +93,7 @@ fun AppBasicTextField(
         if (isSecure && !isPasswordVisible) {
             BasicSecureTextField(
                 state = state,
-                textStyle = style,
+                textStyle = valueStyle.textStyle.copy(color = valueStyle.textColor),
                 enabled = enabled,
                 keyboardOptions = KeyboardOptions.Default,
                 modifier = fieldModifier,
@@ -92,7 +104,7 @@ fun AppBasicTextField(
         } else {
             BasicTextField(
                 state = state,
-                textStyle = style,
+                textStyle = valueStyle.textStyle.copy(color = valueStyle.textColor),
                 enabled = enabled,
                 keyboardOptions = KeyboardOptions.Default,
                 modifier = fieldModifier,
@@ -114,8 +126,19 @@ fun AppBasicTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    style: TextStyle = AppTextStyle.MediumNormal,
     placeholder: String? = null,
+    labelStyle: TextModifier  = TextModifier.apply {
+        textModifier = Modifier.padding(bottom = 2.dp, start = 8.dp)
+        textStyle = AppTextStyle.SmallNormal
+    },
+    placeholderStyle: TextModifier = TextModifier.apply {
+        textColor = AppColors.Grey400
+        textStyle = AppTextStyle.MediumNormal
+    },
+    valueStyle: TextModifier = TextModifier.apply {
+        textColor = AppColors.Grey400
+        textStyle = AppTextStyle.MediumNormal
+    },
     isError: Boolean = false,
     label: String? = null,
     errorText: String? = null,
@@ -134,7 +157,6 @@ fun AppBasicTextField(
     AppBasicTextFieldCore(
         modifier = modifier,
         text = value,
-        style = style,
         placeholder = placeholder,
         isError = isError,
         label = label,
@@ -143,6 +165,8 @@ fun AppBasicTextField(
         unfocusedBorderColor = unfocusedBorderColor,
         errorBorderColor = errorBorderColor,
         backgroundColor = backgroundColor,
+        labelStyle = labelStyle,
+        placeholderStyle = placeholderStyle,
         isSecure = isSecure,
         enabled = enabled,
         prefix = prefix,
@@ -154,7 +178,7 @@ fun AppBasicTextField(
             value = value,
             onValueChange = onValueChange,
             singleLine = singleLine,
-            textStyle = style,
+            textStyle = valueStyle.textStyle.copy(color = valueStyle.textColor),
             visualTransformation = if (isSecure && !isPasswordVisible) {
                 PasswordVisualTransformation()
             } else {
@@ -176,7 +200,6 @@ fun AppBasicTextField(
 private fun AppBasicTextFieldCore(
     modifier: Modifier,
     text: String,
-    style: TextStyle,
     placeholder: String?,
     isError: Boolean,
     label: String?,
@@ -187,6 +210,8 @@ private fun AppBasicTextFieldCore(
     backgroundColor: Color,
     isSecure: Boolean,
     enabled: Boolean,
+    labelStyle: TextModifier,
+    placeholderStyle: TextModifier,
     prefix: @Composable (() -> Unit)?,
     suffix: @Composable (() -> Unit)?,
     trailingIcon: @Composable (() -> Unit)?,
@@ -241,8 +266,9 @@ private fun AppBasicTextFieldCore(
                         if (!label.isNullOrEmpty()) {
                             Text(
                                 label,
-                                style = AppTextStyle.SmallNormal,
-                                modifier = Modifier.padding(bottom = 2.dp, start = 8.dp)
+                                style = labelStyle.textStyle,
+                                modifier = labelStyle.textModifier,
+                                color = labelStyle.textColor
                             )
                         }
 
@@ -258,7 +284,8 @@ private fun AppBasicTextFieldCore(
                             ) {
                                 Text(
                                     text = placeholder,
-                                    style = style.copy(color = AppColors.Grey400)
+                                    style = placeholderStyle.textStyle,
+                                    color = placeholderStyle.textColor
                                 )
                             }
                             innerTextField()
