@@ -85,7 +85,9 @@ fun AppBasicTextField(
                 enabled = enabled,
                 keyboardOptions = KeyboardOptions.Default,
                 modifier = fieldModifier,
-                decorator = decoration
+                decorator = {
+                    decoration(it)
+                }
             )
         } else {
             BasicTextField(
@@ -95,7 +97,9 @@ fun AppBasicTextField(
                 keyboardOptions = KeyboardOptions.Default,
                 modifier = fieldModifier,
                 lineLimits = lineLimits,
-                decorator = decoration
+                decorator = {
+                    decoration(it)
+                }
             )
         }
     }
