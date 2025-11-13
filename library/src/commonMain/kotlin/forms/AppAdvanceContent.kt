@@ -11,10 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.impacto.impactoui.colors.AppColors
 import com.impacto.impactoui.textStyle.AppTextStyle
-import com.impacto.impactoui.textStyle.TextModifier
 
 @Composable
 fun AppAdvanceContent(
@@ -22,18 +22,9 @@ fun AppAdvanceContent(
     title: String,
     placeholder: String,
     value: String? = null,
-    titleStyle: TextModifier = TextModifier.apply {
-        textStyle = AppTextStyle.SmallNormal
-        textColor = AppColors.Blue800
-    },
-    valueStyle: TextModifier = TextModifier.apply {
-        textStyle = AppTextStyle.RegularNormal
-        textColor = AppColors.Blue600
-    },
-    placeholderStyle: TextModifier = TextModifier.apply {
-        textStyle = AppTextStyle.RegularNormal
-        textColor = AppColors.BlueGray400
-    },
+    titleStyle: TextStyle = AppTextStyle.SmallNormal.copy(color = AppColors.Blue800),
+    valueStyle: TextStyle = AppTextStyle.RegularNormal.copy(color = AppColors.Blue600),
+    placeholderStyle: TextStyle = AppTextStyle.RegularNormal.copy(color = AppColors.BlueGray400),
     leadingIcon: Painter? = null,
     trailingIcon: Painter? = null,
     content: @Composable (() -> Unit)? = null
@@ -56,23 +47,21 @@ fun AppAdvanceContent(
             ) {
                 Text(
                     title,
-                    style = titleStyle.textStyle,
-                    color = titleStyle.textColor
+                    style = titleStyle,
                 )
 
                 if (value == null) {
                     Text(
                         placeholder,
-                        style = valueStyle.textStyle,
-                        color = valueStyle.textColor
+                        style = placeholderStyle
                     )
                 }
 
                 if (value != null) {
                     Text(
                         value,
-                        style = placeholderStyle.textStyle,
-                        color = placeholderStyle.textColor
+                        style = valueStyle,
+
                     )
                 }
             }
