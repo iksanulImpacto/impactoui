@@ -141,7 +141,7 @@ mavenPublishing {
     // Ini akan mempublikasikan ke Sonatype (staging)
 //    publishToMavenCentral()
 
-    publishToMavenCentral()
+    publishToMavenCentral(true)
     // Tandatangani semua publikasi
     signAllPublications()
 }
