@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -55,6 +56,7 @@ fun AppBasicTextField(
     prefix: @Composable (() -> Unit)? = null,
     suffix: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
+    keyboardType: KeyboardType = KeyboardType.Unspecified,
     shape: RoundedCornerShape = RoundedCornerShape(8.dp),
 ) {
     val text = state.text.toString()
@@ -79,14 +81,14 @@ fun AppBasicTextField(
         prefix = prefix,
         suffix = suffix,
         trailingIcon = trailingIcon,
-        shape = shape
+        shape = shape,
     ) { fieldModifier, isPasswordVisible, decoration ->
         if (isSecure && !isPasswordVisible) {
             BasicSecureTextField(
                 state = state,
                 textStyle = valueStyle,
                 enabled = enabled,
-                keyboardOptions = KeyboardOptions.Default,
+                keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
                 modifier = fieldModifier,
                 decorator = {
                     decoration(it)
@@ -97,7 +99,7 @@ fun AppBasicTextField(
                 state = state,
                 textStyle = valueStyle,
                 enabled = enabled,
-                keyboardOptions = KeyboardOptions.Default,
+                keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
                 modifier = fieldModifier,
                 lineLimits = lineLimits,
                 decorator = {
@@ -134,6 +136,7 @@ fun AppBasicTextField(
     prefix: @Composable (() -> Unit)? = null,
     suffix: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
+    keyboardType: KeyboardType = KeyboardType.Text,
     shape: RoundedCornerShape = RoundedCornerShape(8.dp),
 ) {
     AppBasicTextFieldCore(
@@ -167,7 +170,7 @@ fun AppBasicTextField(
                 VisualTransformation.None
             },
             enabled = enabled,
-            keyboardOptions = KeyboardOptions.Default,
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             modifier = fieldModifier,
             decorationBox = decoration
         )
@@ -227,12 +230,6 @@ private fun AppBasicTextFieldCore(
                 .padding(vertical = if (label.isNullOrEmpty()) 8.dp else 0.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // prefix
-            prefix?.let {
-                Box(modifier = Modifier.padding(start = 12.dp)) { it() }
-                Spacer(Modifier.width(8.dp))
-            }
-
             Column(modifier = Modifier.weight(1f)) {
 
                 val fieldModifier = Modifier
@@ -253,7 +250,7 @@ private fun AppBasicTextFieldCore(
                             )
                         }
 
-                        Row(
+                        Row (
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -268,17 +265,27 @@ private fun AppBasicTextFieldCore(
                                     style = placeholderStyle
                                 )
                             }
-                            innerTextField()
+                            Row {
+                                // prefix
+                                if (
+                                    (prefix != null && isFocused) ||
+                                    (prefix != null && text.isNotEmpty() && !isFocused)
+                                ) {
+                                    prefix()
+                                }
+                                innerTextField()
+                                Spacer(Modifier.weight(1f))
+                                if (
+                                    (suffix != null && isFocused) ||
+                                    (suffix != null && text.isNotEmpty() && !isFocused)
+                                ) {
+                                    suffix()
+                                }
+                            }
                         }
                     }
                 }
-
                 fieldContent(fieldModifier, isPasswordVisible, decoration)
-            }
-
-            suffix?.let {
-                Spacer(Modifier.width(8.dp))
-                Box(modifier = Modifier.padding(end = 8.dp)) { it() }
             }
 
             trailingIcon?.let {
@@ -307,7 +314,7 @@ private fun AppBasicTextFieldCore(
                 text = errorText,
                 color = errorBorderColor,
                 style = AppTextStyle.SmallNormal,
-                modifier = Modifier.padding(top = 8.dp)
+                modifier = modifier.padding(top = 8.dp)
             )
         }
     }
