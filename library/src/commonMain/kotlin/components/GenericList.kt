@@ -54,7 +54,7 @@ fun <T> GenericList(
                     containerColor = Color.Transparent
                 )
             )
-            if (withDivider) {
+            if (withDivider && item != list.last()) {
                 HorizontalDivider(modifier = modifierDivider)
             }
         }
