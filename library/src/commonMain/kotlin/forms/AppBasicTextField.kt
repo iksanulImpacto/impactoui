@@ -7,8 +7,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicSecureTextField
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,8 +39,10 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 fun AppBasicTextField(
     modifier: Modifier = Modifier,
+    errorModifier: Modifier = Modifier,
     state: TextFieldState,
     placeholder: String? = null,
+    maxLength: Int? = null,
     isError: Boolean = false,
     label: String? = null,
     errorText: String? = null,
@@ -65,6 +69,7 @@ fun AppBasicTextField(
 
     AppBasicTextFieldCore(
         modifier = modifier,
+        errorModifier = errorModifier,
         text = text,
         placeholder = placeholder,
         isError = isError,
@@ -87,6 +92,7 @@ fun AppBasicTextField(
             BasicSecureTextField(
                 state = state,
                 textStyle = valueStyle,
+                inputTransformation = if (maxLength != null) InputTransformation.maxLength(maxLength) else null,
                 enabled = enabled,
                 keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
                 modifier = fieldModifier,
@@ -117,6 +123,7 @@ fun AppBasicTextField(
 @Composable
 fun AppBasicTextField(
     modifier: Modifier = Modifier,
+    errorModifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String? = null,
@@ -141,6 +148,7 @@ fun AppBasicTextField(
 ) {
     AppBasicTextFieldCore(
         modifier = modifier,
+        errorModifier = errorModifier,
         text = value,
         placeholder = placeholder,
         isError = isError,
@@ -184,6 +192,7 @@ fun AppBasicTextField(
 @Composable
 private fun AppBasicTextFieldCore(
     modifier: Modifier,
+    errorModifier: Modifier,
     text: String,
     placeholder: String?,
     isError: Boolean,
@@ -314,7 +323,7 @@ private fun AppBasicTextFieldCore(
                 text = errorText,
                 color = errorBorderColor,
                 style = AppTextStyle.SmallNormal,
-                modifier = modifier.padding(top = 8.dp)
+                modifier = errorModifier.padding(top = 8.dp)
             )
         }
     }
