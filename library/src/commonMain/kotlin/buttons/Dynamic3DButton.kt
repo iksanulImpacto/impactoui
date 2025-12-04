@@ -3,6 +3,7 @@ package com.impacto.impactoui.buttons
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -24,6 +25,9 @@ fun Dynamic3DButton(
         if(enabled) AppColors.Blue700 else Color(0xFFF5F7F9) // biru agak gelap bawah
     ),
     elevationShadow: Dp = 4.dp,
+    paddingHorizontal: Dp = 24.dp,
+    paddingVertical: Dp = 12.dp,
+    buttonHeight: Dp = 46.dp,
     onClick: () -> Unit,
     content: @Composable RowScope.() -> Unit
 ) {
@@ -43,7 +47,8 @@ fun Dynamic3DButton(
                     listColor
                 ),
                 shape = RoundedCornerShape(cornerRadius)
-            ),
+            )
+            .height(buttonHeight),
         shape = RoundedCornerShape(cornerRadius),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent, // pakai gradient manual
@@ -52,8 +57,8 @@ fun Dynamic3DButton(
             disabledContentColor = Color(0xFFF5F7F9)
         ),
         contentPadding = PaddingValues(
-            horizontal = 24.dp,
-            vertical = 14.dp
+            horizontal = paddingHorizontal,
+            vertical = paddingVertical
         )
     ) {
         content()
