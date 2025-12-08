@@ -8,6 +8,8 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.math.round
 import kotlin.math.pow
+import kotlin.time.Clock
+import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -128,6 +130,28 @@ object FormatterUtil {
         val day = dateTime.day
         val month = SHORT_MONTHS[dateTime.month.number - 1]
         return "$day $month"
+    }
+
+    @OptIn(ExperimentalTime::class)
+    fun timeAgo(date: LocalDateTime): String {
+        val zone = TimeZone.currentSystemDefault()
+        val nowInstant = Clock.System.now()
+        val dateInstant = date.toInstant(zone)
+
+        val diff: Duration = nowInstant - dateInstant
+
+        val minutes = diff.inWholeMinutes
+        val hours = diff.inWholeHours
+        val days = diff.inWholeDays
+
+        return when {
+            minutes < 1 -> "Baru saja"
+            minutes < 60 -> "$minutes menit lalu"
+            hours < 24 -> "$hours jam lalu"
+            days == 1L -> "Kemarin"
+            days < 7 -> "$days hari lalu"
+            else -> FormatterUtil.dateToFullDateString(date)
+        }
     }
 
     // --- Number utilities (KMP safe) ---
