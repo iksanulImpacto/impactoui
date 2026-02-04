@@ -24,6 +24,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.impacto.impactoui.colors.AppColors
 import com.impacto.impactoui.library.generated.resources.Res
@@ -61,6 +62,8 @@ fun AppBasicTextField(
     suffix: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Unspecified,
+    minHeight: Dp = 50.dp,
+    paddingValues: PaddingValues = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
     shape: RoundedCornerShape = RoundedCornerShape(8.dp),
 ) {
     val text = state.text.toString()
@@ -86,7 +89,9 @@ fun AppBasicTextField(
         prefix = prefix,
         suffix = suffix,
         trailingIcon = trailingIcon,
+        minHeight = minHeight,
         shape = shape,
+        paddingValues = paddingValues
     ) { fieldModifier, isPasswordVisible, decoration ->
         if (isSecure && !isPasswordVisible) {
             BasicSecureTextField(
@@ -165,7 +170,8 @@ fun AppBasicTextField(
         prefix = prefix,
         suffix = suffix,
         trailingIcon = trailingIcon,
-        shape = shape
+        shape = shape,
+        paddingValues = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
     ) { fieldModifier, isPasswordVisible, decoration ->
         BasicTextField(
             value = value,
@@ -210,6 +216,8 @@ private fun AppBasicTextFieldCore(
     suffix: @Composable (() -> Unit)?,
     trailingIcon: @Composable (() -> Unit)?,
     shape: RoundedCornerShape,
+    minHeight: Dp = 50.dp,
+    paddingValues: PaddingValues,
     fieldContent: @Composable (
         fieldModifier: Modifier,
         isPasswordVisible: Boolean,
@@ -228,8 +236,7 @@ private fun AppBasicTextFieldCore(
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = modifier
-                .fillMaxWidth()
-                .heightIn(min = 50.dp)
+                .heightIn(min = minHeight)
                 .background(backgroundColor, shape)
                 .border(
                     width = 1.5.dp,
@@ -243,7 +250,7 @@ private fun AppBasicTextFieldCore(
 
                 val fieldModifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 4.dp, vertical = 8.dp)
+                    .padding(paddingValues = paddingValues)
                     .onFocusChanged { focusState ->
                         isFocused = focusState.isFocused
                     }
@@ -263,7 +270,7 @@ private fun AppBasicTextFieldCore(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(start = 8.dp)
+                                .padding(horizontal = 8.dp)
                         ) {
                             if (text.isEmpty() &&
                                 !placeholder.isNullOrEmpty() &&

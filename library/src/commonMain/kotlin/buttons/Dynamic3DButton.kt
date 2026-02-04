@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.impacto.impactoui.colors.AppColors
@@ -28,10 +29,10 @@ fun Dynamic3DButton(
     paddingHorizontal: Dp = 24.dp,
     paddingVertical: Dp = 12.dp,
     buttonHeight: Dp = 46.dp,
+    shape: Shape = RoundedCornerShape(50.dp),
     onClick: () -> Unit,
     content: @Composable RowScope.() -> Unit
 ) {
-    val cornerRadius = 50.dp
 
     Button(
         onClick = onClick,
@@ -39,17 +40,17 @@ fun Dynamic3DButton(
         modifier = modifier
             .shadow(
                 elevation = elevationShadow, // bayangan untuk efek 3D
-                shape = RoundedCornerShape(cornerRadius),
+                shape = shape,
                 clip = false
             )
             .background(
                 brush = Brush.verticalGradient(
                     listColor
                 ),
-                shape = RoundedCornerShape(cornerRadius)
+                shape = shape
             )
             .height(buttonHeight),
-        shape = RoundedCornerShape(cornerRadius),
+        shape = shape,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent, // pakai gradient manual
             contentColor = AppColors.White,

@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.impacto.impactoui.colors.AppColors
 import com.impacto.impactoui.textStyle.AppTextStyle
@@ -34,6 +35,9 @@ fun <T> GenericList(
     modifierDivider: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
     withDivider: Boolean = true,
+    withDividerLast: Boolean = false,
+    dividerColor: Color = DividerDefaults.color,
+    dividerThickness: Dp = DividerDefaults.Thickness,
     rowContent: @Composable (T) -> Unit,
 ) {
     LazyColumn (
@@ -54,8 +58,12 @@ fun <T> GenericList(
                     containerColor = Color.Transparent
                 )
             )
-            if (withDivider && item != list.last()) {
-                HorizontalDivider(modifier = modifierDivider)
+            if (withDivider && (item != list.last() || withDividerLast)) {
+                HorizontalDivider(
+                    modifier = modifierDivider,
+                    color = dividerColor,
+                    thickness = dividerThickness
+                )
             }
         }
     }
