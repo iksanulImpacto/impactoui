@@ -18,30 +18,40 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.impacto.impactoui.textStyle.AppTextStyle
 
-enum class TextStatusSize(
+sealed class TextStatusSize(
     val height: Dp,
     val horizontalPadding: Dp,
     val verticalPadding: Dp,
     val textStyle: TextStyle
 ) {
-    Small(
+    object Small : TextStatusSize(
         height = 16.dp,
         horizontalPadding = 8.dp,
         verticalPadding = 2.dp,
         textStyle = AppTextStyle.ExtraSmallNormal
-    ),
-    Medium(
+    )
+
+    object Medium : TextStatusSize(
         height = 28.dp,
         horizontalPadding = 12.dp,
         verticalPadding = 4.dp,
         textStyle = AppTextStyle.SmallNormal
-    ),
-    Large(
+    )
+
+    object Large : TextStatusSize(
         height = 36.dp,
         horizontalPadding = 16.dp,
         verticalPadding = 6.dp,
         textStyle = AppTextStyle.MediumNormal
     )
+
+    // Ini yang memungkinkan nilai kustom
+    class Custom(
+        height: Dp,
+        horizontalPadding: Dp,
+        verticalPadding: Dp,
+        textStyle: TextStyle
+    ) : TextStatusSize(height, horizontalPadding, verticalPadding, textStyle)
 }
 
 @Composable
