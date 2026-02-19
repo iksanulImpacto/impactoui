@@ -29,6 +29,7 @@ fun Dynamic3DButton(
     paddingHorizontal: Dp = 24.dp,
     paddingVertical: Dp = 12.dp,
     buttonHeight: Dp = 46.dp,
+    disableColor: Color = Color(0xFFF5F7F9),
     shape: Shape = RoundedCornerShape(50.dp),
     onClick: () -> Unit,
     content: @Composable RowScope.() -> Unit
@@ -54,8 +55,8 @@ fun Dynamic3DButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent, // pakai gradient manual
             contentColor = AppColors.White,
-            disabledContainerColor = Color(0xFFF5F7F9),
-            disabledContentColor = Color(0xFFF5F7F9)
+            disabledContainerColor = disableColor,
+            disabledContentColor = disableColor
         ),
         contentPadding = PaddingValues(
             horizontal = paddingHorizontal,

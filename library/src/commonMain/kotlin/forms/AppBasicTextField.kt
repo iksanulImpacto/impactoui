@@ -1,5 +1,7 @@
 package com.impacto.impactoui.forms
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -20,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -48,6 +51,7 @@ fun AppBasicTextField(
     label: String? = null,
     errorText: String? = null,
     labelStyle: TextStyle = AppTextStyle.SmallNormal,
+    labelStyleFocus: TextStyle = AppTextStyle.SmallNormal,
     placeholderStyle: TextStyle = AppTextStyle.MediumNormal.copy(color = AppColors.Grey400),
     valueStyle: TextStyle = AppTextStyle.MediumNormal.copy(color = AppColors.Grey400),
     focusedBorderColor: Color = AppColors.Blue500,
@@ -56,6 +60,7 @@ fun AppBasicTextField(
     backgroundColor: Color = Color.White,
     isSecure: Boolean = false,
     enabled: Boolean = true,
+    isMandatory: Boolean = true,
     singleLine: Boolean = true,
     maxLines: Int = Int.MAX_VALUE,
     prefix: @Composable (() -> Unit)? = null,
@@ -78,6 +83,7 @@ fun AppBasicTextField(
         isError = isError,
         label = label,
         labelStyle = labelStyle,
+        labelStyleFocus = labelStyleFocus,
         placeholderStyle = placeholderStyle,
         errorText = errorText,
         focusedBorderColor = focusedBorderColor,
@@ -86,6 +92,7 @@ fun AppBasicTextField(
         backgroundColor = backgroundColor,
         isSecure = isSecure,
         enabled = enabled,
+        mandatory = isMandatory,
         prefix = prefix,
         suffix = suffix,
         trailingIcon = trailingIcon,
@@ -133,9 +140,11 @@ fun AppBasicTextField(
     onValueChange: (String) -> Unit,
     placeholder: String? = null,
     labelStyle: TextStyle = AppTextStyle.SmallNormal,
+    labelStyleFocus: TextStyle = AppTextStyle.SmallNormal,
     placeholderStyle: TextStyle = AppTextStyle.MediumNormal.copy(color = AppColors.Grey400),
     valueStyle: TextStyle = AppTextStyle.MediumNormal.copy(color = AppColors.Grey400),
     isError: Boolean = false,
+    isMandatory: Boolean = false,
     label: String? = null,
     errorText: String? = null,
     focusedBorderColor: Color = AppColors.Blue500,
@@ -164,8 +173,10 @@ fun AppBasicTextField(
         errorBorderColor = errorBorderColor,
         backgroundColor = backgroundColor,
         labelStyle = labelStyle,
+        labelStyleFocus = labelStyleFocus,
         placeholderStyle = placeholderStyle,
         isSecure = isSecure,
+        mandatory = isMandatory,
         enabled = enabled,
         prefix = prefix,
         suffix = suffix,
@@ -210,7 +221,9 @@ private fun AppBasicTextFieldCore(
     backgroundColor: Color,
     isSecure: Boolean,
     enabled: Boolean,
+    mandatory: Boolean,
     labelStyle: TextStyle,
+    labelStyleFocus: TextStyle,
     placeholderStyle: TextStyle,
     prefix: @Composable (() -> Unit)?,
     suffix: @Composable (() -> Unit)?,
@@ -226,6 +239,18 @@ private fun AppBasicTextFieldCore(
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
+
+    val shouldFloat = isFocused || text.isNotEmpty()
+
+    val offsetY by animateDpAsState(
+        if (shouldFloat) 0.dp else 10.dp,
+        label = ""
+    )
+
+    val scale by animateFloatAsState(
+        1f,
+        label = ""
+    )
 
     val borderColor = when {
         isError -> errorBorderColor
@@ -259,11 +284,27 @@ private fun AppBasicTextFieldCore(
                 val decoration: @Composable (@Composable () -> Unit) -> Unit = { innerTextField ->
                     Column {
                         if (!label.isNullOrEmpty()) {
-                            Text(
-                                label,
-                                style = labelStyle,
-                                modifier = Modifier.padding(bottom = 2.dp, start = 8.dp)
-                            )
+                            Row(
+                                modifier = Modifier.graphicsLayer {
+                                    translationY = offsetY.toPx()
+                                    scaleX = scale
+                                    scaleY = scale
+                                }.padding(start = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = label,
+                                    style = if (shouldFloat) labelStyleFocus else labelStyle,
+                                )
+
+                                if (mandatory) {
+                                    Spacer(Modifier.width(2.dp))
+                                    Text(
+                                        text = "*",
+                                        color = Color.Red
+                                    )
+                                }
+                            }
                         }
 
                         Row (
