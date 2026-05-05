@@ -8,8 +8,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicSecureTextField
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActionScope
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
+import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.maxLength
@@ -24,6 +27,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -51,7 +55,7 @@ fun AppBasicTextField(
     label: String? = null,
     errorText: String? = null,
     labelStyle: TextStyle = AppTextStyle.SmallNormal,
-    labelStyleFocus: TextStyle = AppTextStyle.SmallNormal,
+    labelStyleFocus: TextStyle = labelStyle,
     placeholderStyle: TextStyle = AppTextStyle.MediumNormal.copy(color = AppColors.Grey400),
     valueStyle: TextStyle = AppTextStyle.MediumNormal.copy(color = AppColors.Grey400),
     focusedBorderColor: Color = AppColors.Blue500,
@@ -60,14 +64,18 @@ fun AppBasicTextField(
     backgroundColor: Color = Color.White,
     isSecure: Boolean = false,
     enabled: Boolean = true,
-    isMandatory: Boolean = true,
+    isMandatory: Boolean = false,
+    mandatoryLabelColor: Color = Color.Red,
     singleLine: Boolean = true,
     maxLines: Int = Int.MAX_VALUE,
     prefix: @Composable (() -> Unit)? = null,
     suffix: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Unspecified,
+    imeAction: ImeAction = ImeAction.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     minHeight: Dp = 50.dp,
+    inputTransformation: InputTransformation? = null,
     paddingValues: PaddingValues = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
     shape: RoundedCornerShape = RoundedCornerShape(8.dp),
 ) {
@@ -98,31 +106,64 @@ fun AppBasicTextField(
         trailingIcon = trailingIcon,
         minHeight = minHeight,
         shape = shape,
-        paddingValues = paddingValues
+        paddingValues = paddingValues,
+        mandatoryLabelColor = mandatoryLabelColor,
     ) { fieldModifier, isPasswordVisible, decoration ->
+        val onKeyboardAction = if (keyboardActions != KeyboardActions.Default) {
+            KeyboardActionHandler { performDefaultAction ->
+                val legacyScope = object : KeyboardActionScope {
+                    override fun defaultKeyboardAction(imeAction: ImeAction) {
+                        performDefaultAction()
+                    }
+                }
+                when (imeAction) {
+                    ImeAction.Done -> keyboardActions.onDone?.invoke(legacyScope) ?: performDefaultAction()
+                    ImeAction.Go -> keyboardActions.onGo?.invoke(legacyScope) ?: performDefaultAction()
+                    ImeAction.Next -> keyboardActions.onNext?.invoke(legacyScope) ?: performDefaultAction()
+                    ImeAction.Previous -> keyboardActions.onPrevious?.invoke(legacyScope) ?: performDefaultAction()
+                    ImeAction.Search -> keyboardActions.onSearch?.invoke(legacyScope) ?: performDefaultAction()
+                    ImeAction.Send -> keyboardActions.onSend?.invoke(legacyScope) ?: performDefaultAction()
+                    else -> performDefaultAction()
+                }
+            }
+        } else null
+
         if (isSecure && !isPasswordVisible) {
             BasicSecureTextField(
                 state = state,
                 textStyle = valueStyle,
-                inputTransformation = if (maxLength != null) InputTransformation.maxLength(maxLength) else null,
+                inputTransformation = if (maxLength != null) {
+                    (inputTransformation ?: InputTransformation).maxLength(maxLength)
+                } else {
+                    inputTransformation
+                },
                 enabled = enabled,
-                keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = keyboardType,
+                    imeAction = imeAction,
+                ),
+                onKeyboardAction = onKeyboardAction,
                 modifier = fieldModifier,
                 decorator = {
                     decoration(it)
-                }
+                },
             )
         } else {
             BasicTextField(
                 state = state,
                 textStyle = valueStyle,
                 enabled = enabled,
-                keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = keyboardType,
+                    imeAction = imeAction,
+                ),
+                onKeyboardAction = onKeyboardAction,
                 modifier = fieldModifier,
                 lineLimits = lineLimits,
+                inputTransformation = inputTransformation,
                 decorator = {
                     decoration(it)
-                }
+                },
             )
         }
     }
@@ -140,11 +181,12 @@ fun AppBasicTextField(
     onValueChange: (String) -> Unit,
     placeholder: String? = null,
     labelStyle: TextStyle = AppTextStyle.SmallNormal,
-    labelStyleFocus: TextStyle = AppTextStyle.SmallNormal,
+    labelStyleFocus: TextStyle = labelStyle,
     placeholderStyle: TextStyle = AppTextStyle.MediumNormal.copy(color = AppColors.Grey400),
     valueStyle: TextStyle = AppTextStyle.MediumNormal.copy(color = AppColors.Grey400),
     isError: Boolean = false,
     isMandatory: Boolean = false,
+    mandatoryLabelColor: Color = Color.Red,
     label: String? = null,
     errorText: String? = null,
     focusedBorderColor: Color = AppColors.Blue500,
@@ -158,6 +200,8 @@ fun AppBasicTextField(
     suffix: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     shape: RoundedCornerShape = RoundedCornerShape(8.dp),
 ) {
     AppBasicTextFieldCore(
@@ -182,7 +226,8 @@ fun AppBasicTextField(
         suffix = suffix,
         trailingIcon = trailingIcon,
         shape = shape,
-        paddingValues = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
+        paddingValues = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+        mandatoryLabelColor = mandatoryLabelColor,
     ) { fieldModifier, isPasswordVisible, decoration ->
         BasicTextField(
             value = value,
@@ -195,9 +240,13 @@ fun AppBasicTextField(
                 VisualTransformation.None
             },
             enabled = enabled,
-            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = keyboardType,
+                imeAction = imeAction,
+            ),
+            keyboardActions = keyboardActions,
             modifier = fieldModifier,
-            decorationBox = decoration
+            decorationBox = decoration,
         )
     }
 }
@@ -222,6 +271,7 @@ private fun AppBasicTextFieldCore(
     isSecure: Boolean,
     enabled: Boolean,
     mandatory: Boolean,
+    mandatoryLabelColor: Color,
     labelStyle: TextStyle,
     labelStyleFocus: TextStyle,
     placeholderStyle: TextStyle,
@@ -234,22 +284,22 @@ private fun AppBasicTextFieldCore(
     fieldContent: @Composable (
         fieldModifier: Modifier,
         isPasswordVisible: Boolean,
-        decoration: @Composable (@Composable () -> Unit) -> Unit
-    ) -> Unit
+        decoration: @Composable (@Composable () -> Unit) -> Unit,
+    ) -> Unit,
 ) {
-    var isPasswordVisible by remember { mutableStateOf(false) }
-    var isFocused by remember { mutableStateOf(false) }
+    var isPasswordVisible by remember { mutableStateOf(value = false) }
+    var isFocused by remember { mutableStateOf(value = false) }
 
-    val shouldFloat = isFocused || text.isNotEmpty()
+    val shouldFloat = (isFocused || text.isNotEmpty()) || !placeholder.isNullOrEmpty()
 
     val offsetY by animateDpAsState(
         if (shouldFloat) 0.dp else 10.dp,
-        label = ""
+        label = "",
     )
 
     val scale by animateFloatAsState(
         1f,
-        label = ""
+        label = "",
     )
 
     val borderColor = when {
@@ -266,10 +316,10 @@ private fun AppBasicTextFieldCore(
                 .border(
                     width = 1.5.dp,
                     color = borderColor,
-                    shape = shape
+                    shape = shape,
                 )
                 .padding(vertical = if (label.isNullOrEmpty()) 8.dp else 0.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(modifier = Modifier.weight(1f)) {
 
@@ -290,7 +340,7 @@ private fun AppBasicTextFieldCore(
                                     scaleX = scale
                                     scaleY = scale
                                 }.padding(start = 8.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Text(
                                     text = label,
@@ -301,7 +351,7 @@ private fun AppBasicTextFieldCore(
                                     Spacer(Modifier.width(2.dp))
                                     Text(
                                         text = "*",
-                                        color = Color.Red
+                                        color = mandatoryLabelColor,
                                     )
                                 }
                             }
@@ -311,7 +361,7 @@ private fun AppBasicTextFieldCore(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 8.dp)
+                                .padding(horizontal = 8.dp),
                         ) {
                             if (text.isEmpty() &&
                                 !placeholder.isNullOrEmpty() &&
@@ -319,22 +369,22 @@ private fun AppBasicTextFieldCore(
                             ) {
                                 Text(
                                     text = placeholder,
-                                    style = placeholderStyle
+                                    style = placeholderStyle,
                                 )
                             }
                             Row {
                                 // prefix
                                 if (
-                                    (prefix != null && isFocused) ||
-                                    (prefix != null && text.isNotEmpty() && !isFocused)
+                                    ((prefix != null) && isFocused) ||
+                                    ((prefix != null) && text.isNotEmpty() && !isFocused)
                                 ) {
                                     prefix()
                                 }
                                 innerTextField()
                                 Spacer(Modifier.weight(1f))
                                 if (
-                                    (suffix != null && isFocused) ||
-                                    (suffix != null && text.isNotEmpty() && !isFocused)
+                                    ((suffix != null) && isFocused) ||
+                                    ((suffix != null) && text.isNotEmpty() && !isFocused)
                                 ) {
                                     suffix()
                                 }
@@ -352,15 +402,15 @@ private fun AppBasicTextFieldCore(
             if (isSecure) {
                 IconButton(
                     enabled = enabled,
-                    onClick = { isPasswordVisible = !isPasswordVisible }
+                    onClick = { isPasswordVisible = !isPasswordVisible },
                 ) {
                     Icon(
                         painter = painterResource(
                             if (isPasswordVisible) Res.drawable.ic_visibility
-                            else Res.drawable.ic_visibility_off
+                            else Res.drawable.ic_visibility_off,
                         ),
                         tint = Color.Unspecified,
-                        contentDescription = "Toggle Password"
+                        contentDescription = "Toggle Password",
                     )
                 }
             }
@@ -371,7 +421,7 @@ private fun AppBasicTextFieldCore(
                 text = errorText,
                 color = errorBorderColor,
                 style = AppTextStyle.SmallNormal,
-                modifier = errorModifier.padding(top = 8.dp)
+                modifier = errorModifier.padding(top = 8.dp),
             )
         }
     }

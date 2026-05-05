@@ -19,7 +19,7 @@ import com.impacto.impactoui.textStyle.AppTextStyle
 @Composable
 fun AppAdvanceContent(
     modifier: Modifier = Modifier,
-    title: String,
+    title: String? = null,
     placeholder: String,
     value: String? = null,
     titleStyle: TextStyle = AppTextStyle.SmallNormal.copy(color = AppColors.Blue800),
@@ -27,6 +27,8 @@ fun AppAdvanceContent(
     placeholderStyle: TextStyle = AppTextStyle.RegularNormal.copy(color = AppColors.BlueGray400),
     leadingIcon: Painter? = null,
     trailingIcon: Painter? = null,
+    leadingComponent: @Composable (() -> Unit)? = null,
+    trailingComponent: @Composable (() -> Unit)? = null,
     content: @Composable (() -> Unit)? = null
 ) {
     Column {
@@ -41,14 +43,19 @@ fun AppAdvanceContent(
                     contentDescription = null,
                 )
             }
+            if (leadingComponent != null) {
+                leadingComponent()
+            }
 
             Column (
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
-                Text(
-                    title,
-                    style = titleStyle,
-                )
+                if (!title.isNullOrEmpty()) {
+                    Text(
+                        title,
+                        style = titleStyle,
+                    )
+                }
 
                 if (value == null) {
                     Text(
@@ -67,6 +74,10 @@ fun AppAdvanceContent(
             }
 
             Spacer(Modifier.weight(1f))
+
+            if (trailingComponent != null) {
+                trailingComponent()
+            }
 
             if (trailingIcon != null) {
                 Icon(
