@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.impacto.impactoui"
-version = "1.0.42"
+version = "1.0.51"
 
 kotlin {
     // Target JVM (desktop / server)
@@ -57,6 +57,7 @@ kotlin {
 
         // --- Perbaikan Hirarki iOS ---
         // Dapatkan referensi ke source set yang dibuat otomatis oleh target iOS
+        val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
 
@@ -65,7 +66,8 @@ kotlin {
             // iosMain bergantung pada commonMain
             dependsOn(commonMain)
 
-            // Buat target spesifik (iosArm64, iosSimulatorArm64) bergantung pada iosMain
+            // Buat target spesifik (iosX64, iosArm64, iosSimulatorArm64) bergantung pada iosMain
+            iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
         }
@@ -110,7 +112,7 @@ mavenPublishing {
     coordinates(
         groupId = "io.github.iksanulimpacto",
         artifactId = "impactoui", // Nama pustaka Anda
-        version = "1.0.42"
+        version = "1.0.51"
     )
 
     pom {

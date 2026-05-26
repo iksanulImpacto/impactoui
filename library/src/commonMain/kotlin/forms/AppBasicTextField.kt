@@ -30,6 +30,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.PlatformImeOptions
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -73,6 +74,7 @@ fun AppBasicTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Unspecified,
     imeAction: ImeAction = ImeAction.Default,
+    platformImeOptions: PlatformImeOptions? = rememberDefaultPlatformImeOptions(),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     minHeight: Dp = 50.dp,
     inputTransformation: InputTransformation? = null,
@@ -141,6 +143,7 @@ fun AppBasicTextField(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = keyboardType,
                     imeAction = imeAction,
+                    platformImeOptions = platformImeOptions,
                 ),
                 onKeyboardAction = onKeyboardAction,
                 modifier = fieldModifier,
@@ -156,6 +159,7 @@ fun AppBasicTextField(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = keyboardType,
                     imeAction = imeAction,
+                    platformImeOptions = platformImeOptions,
                 ),
                 onKeyboardAction = onKeyboardAction,
                 modifier = fieldModifier,
@@ -201,6 +205,7 @@ fun AppBasicTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Default,
+    platformImeOptions: PlatformImeOptions? = rememberDefaultPlatformImeOptions(),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     shape: RoundedCornerShape = RoundedCornerShape(8.dp),
 ) {
@@ -243,6 +248,7 @@ fun AppBasicTextField(
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
                 imeAction = imeAction,
+                platformImeOptions = platformImeOptions,
             ),
             keyboardActions = keyboardActions,
             modifier = fieldModifier,
