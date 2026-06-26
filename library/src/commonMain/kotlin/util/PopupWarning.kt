@@ -37,6 +37,7 @@ import com.impacto.impactoui.library.generated.resources.ic_error_circle
 import com.impacto.impactoui.library.generated.resources.ic_warning_circle
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
+import kotlin.time.Duration.Companion.milliseconds
 
 enum class PopupType { SUCCESS, ERROR, WARNING }
 
@@ -83,14 +84,14 @@ fun PopupHost() {
                 val event = events.first()
                 currentPopup = event
 
-                delay(event.time ?: 3000L)
+                delay((event.time ?: 3000L).milliseconds)
 
                 PopupManager.remove(event)
                 currentPopup = null
 
-                delay(250L)
+                delay(250L.milliseconds)
             } else {
-                delay(100L)
+                delay(100L.milliseconds)
             }
         }
     }

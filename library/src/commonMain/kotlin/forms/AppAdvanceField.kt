@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.impacto.impactoui.textStyle.AppTextStyle
+import com.impacto.impactoui.tokens.AppRadius
 
 @Composable
 fun AppAdvanceField(
@@ -28,7 +29,7 @@ fun AppAdvanceField(
     errorText: String? = null,
     backgroundColor: Color = if (enabled) Color(0xFFE3F2FD) else Color(0xFFEEEEEE),
     borderColor: Color = if (isError) Color(0xFFF44336) else Color(0xFF2196F3),
-    shape: Shape = RoundedCornerShape(8.dp),
+    shape: Shape = RoundedCornerShape(AppRadius.Default),
     content: @Composable RowScope.() -> Unit
 ) {
     Column(modifier = modifier) {

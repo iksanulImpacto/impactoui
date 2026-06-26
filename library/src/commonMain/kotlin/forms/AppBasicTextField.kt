@@ -35,6 +35,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.impacto.impactoui.colors.AppColors
+import com.impacto.impactoui.tokens.AppRadius
 import com.impacto.impactoui.library.generated.resources.Res
 import com.impacto.impactoui.library.generated.resources.ic_visibility
 import com.impacto.impactoui.library.generated.resources.ic_visibility_off
@@ -79,7 +80,7 @@ fun AppBasicTextField(
     minHeight: Dp = 50.dp,
     inputTransformation: InputTransformation? = null,
     paddingValues: PaddingValues = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
-    shape: RoundedCornerShape = RoundedCornerShape(8.dp),
+    shape: RoundedCornerShape = RoundedCornerShape(AppRadius.Default),
 ) {
     val text = state.text.toString()
     val lineLimits =
@@ -207,7 +208,7 @@ fun AppBasicTextField(
     imeAction: ImeAction = ImeAction.Default,
     platformImeOptions: PlatformImeOptions? = rememberDefaultPlatformImeOptions(),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    shape: RoundedCornerShape = RoundedCornerShape(8.dp),
+    shape: RoundedCornerShape = RoundedCornerShape(AppRadius.Default),
 ) {
     AppBasicTextFieldCore(
         modifier = modifier,

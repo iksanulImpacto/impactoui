@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.impacto.impactoui"
-version = "1.0.51"
+version = "1.1.4"
 
 kotlin {
     // Target JVM (desktop / server)
@@ -46,7 +46,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(libs.compose.ui.tooling)
-//                implementation(libs.compose.ui.tooling.preview)
+                implementation(libs.compose.ui.tooling.preview)
             }
         }
         val commonTest by getting {
@@ -112,7 +112,7 @@ mavenPublishing {
     coordinates(
         groupId = "io.github.iksanulimpacto",
         artifactId = "impactoui", // Nama pustaka Anda
-        version = "1.0.51"
+        version = "1.1.4"
     )
 
     pom {

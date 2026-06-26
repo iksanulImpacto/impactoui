@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.impacto.impactoui.tokens.AppRadius
 
 @Composable
 fun DynamicButton(
@@ -23,7 +24,7 @@ fun DynamicButton(
     contentColor: Color = MaterialTheme.colorScheme.onPrimary,
     borderColor: Color? = null,
     borderWidth: Dp = 1.5.dp,
-    shape: Shape = RoundedCornerShape(8.dp),
+    shape: Shape = RoundedCornerShape(AppRadius.Default),
     paddingHorizontal: Dp = 16.dp,
     paddingVertical: Dp = 12.dp,
     onClick: () -> Unit,

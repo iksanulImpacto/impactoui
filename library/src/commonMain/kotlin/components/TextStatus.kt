@@ -17,6 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.impacto.impactoui.textStyle.AppTextStyle
+import com.impacto.impactoui.tokens.AppRadius
 
 sealed class TextStatusSize(
     val height: Dp,
@@ -64,7 +65,7 @@ fun TextStatus(
     Row(
         modifier = modifier
             .height(size.height)
-            .background(color = color, shape = RoundedCornerShape(size = 8.dp))
+            .background(color = color, shape = RoundedCornerShape(size = AppRadius.Default))
             .padding(
                 start = size.horizontalPadding,
                 end = size.horizontalPadding,

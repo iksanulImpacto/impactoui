@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.impacto.impactoui.tokens.AppRadius
 
 @Composable
 fun AppTextField(
@@ -35,11 +36,11 @@ fun AppTextField(
         content(
             Modifier
                 .fillMaxWidth()
-                .background(backgroundColor, RoundedCornerShape(8.dp))
+                .background(backgroundColor, RoundedCornerShape(AppRadius.Default))
                 .border(
                     width = 1.5.dp,
                     color = borderColor,
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(AppRadius.Default)
                 ),
             isError
         )
