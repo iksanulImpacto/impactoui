@@ -24,7 +24,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -64,6 +67,7 @@ fun AppBasicTextField(
     unfocusedBorderColor: Color = AppColors.Grey400,
     errorBorderColor: Color = MaterialTheme.colorScheme.error,
     backgroundColor: Color = Color.White,
+    cursorBrush: Brush = SolidColor(Color.Black),
     isSecure: Boolean = false,
     enabled: Boolean = true,
     isMandatory: Boolean = false,
@@ -73,6 +77,7 @@ fun AppBasicTextField(
     prefix: @Composable (() -> Unit)? = null,
     suffix: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
+    iconColor: Color = Color.Unspecified,
     keyboardType: KeyboardType = KeyboardType.Unspecified,
     imeAction: ImeAction = ImeAction.Default,
     platformImeOptions: PlatformImeOptions? = rememberDefaultPlatformImeOptions(),
@@ -101,6 +106,7 @@ fun AppBasicTextField(
         unfocusedBorderColor = unfocusedBorderColor,
         errorBorderColor = errorBorderColor,
         backgroundColor = backgroundColor,
+        iconColor = iconColor,
         isSecure = isSecure,
         enabled = enabled,
         mandatory = isMandatory,
@@ -140,6 +146,7 @@ fun AppBasicTextField(
                 } else {
                     inputTransformation
                 },
+                cursorBrush = cursorBrush,
                 enabled = enabled,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = keyboardType,
@@ -157,6 +164,7 @@ fun AppBasicTextField(
                 state = state,
                 textStyle = valueStyle,
                 enabled = enabled,
+                cursorBrush = cursorBrush,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = keyboardType,
                     imeAction = imeAction,
@@ -198,6 +206,8 @@ fun AppBasicTextField(
     unfocusedBorderColor: Color = AppColors.Grey400,
     errorBorderColor: Color = MaterialTheme.colorScheme.error,
     backgroundColor: Color = Color.White,
+    iconColor: Color = Color.Unspecified,
+    cursorBrush: Brush = SolidColor(Color.Black),
     isSecure: Boolean = false,
     enabled: Boolean = true,
     singleLine: Boolean = true,
@@ -222,6 +232,7 @@ fun AppBasicTextField(
         unfocusedBorderColor = unfocusedBorderColor,
         errorBorderColor = errorBorderColor,
         backgroundColor = backgroundColor,
+        iconColor = iconColor,
         labelStyle = labelStyle,
         labelStyleFocus = labelStyleFocus,
         placeholderStyle = placeholderStyle,
@@ -240,6 +251,7 @@ fun AppBasicTextField(
             onValueChange = onValueChange,
             singleLine = singleLine,
             textStyle = valueStyle,
+            cursorBrush = cursorBrush,
             visualTransformation = if (isSecure && !isPasswordVisible) {
                 PasswordVisualTransformation()
             } else {
@@ -275,6 +287,7 @@ private fun AppBasicTextFieldCore(
     unfocusedBorderColor: Color,
     errorBorderColor: Color,
     backgroundColor: Color,
+    iconColor: Color,
     isSecure: Boolean,
     enabled: Boolean,
     mandatory: Boolean,
@@ -416,7 +429,7 @@ private fun AppBasicTextFieldCore(
                             if (isPasswordVisible) Res.drawable.ic_visibility
                             else Res.drawable.ic_visibility_off,
                         ),
-                        tint = Color.Unspecified,
+                        tint = iconColor,
                         contentDescription = "Toggle Password",
                     )
                 }
