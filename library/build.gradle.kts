@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.impacto.impactoui"
-version = "1.1.4"
+version = "1.1.5"
 
 kotlin {
     // Target JVM (desktop / server)
@@ -112,7 +112,7 @@ mavenPublishing {
     coordinates(
         groupId = "io.github.iksanulimpacto",
         artifactId = "impactoui", // Nama pustaka Anda
-        version = "1.1.4"
+        version = "1.1.5"
     )
 
     pom {
